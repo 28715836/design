@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/store.css" />
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js" ></script>
+		<script>
+			$(function(){
+				var Request = requestURL();
+				var access_token = localStorage.getItem("token")
+				if (access_token) {
+					var user = querySelf(access_token);
+					if(user != null) {
+						isFavorByUserId(user.id,Request["storeId"]);
+					}
+				}
+				storeDetail(Request["storeId"]);
+				selectComment(Request["storeId"],'');
+				commentDistribute(Request["storeId"]);
+			})		
+		</script>
+		<script type="text/javascript" src="js/store.js" ></script>
+	<style>
+	
+	</style>
+	</head>
+	<body style="background-color: #f6f6f6;">
+		<script type="text/javascript" src="js/storeHeader.js" ></script>
+			<div class="shopnav">
+				<div class="container clearfix">
+					<div class="shopnav-left">
+						<a href="javascript:void(0)" class="shopnav-tab store">所有商品</a>
+						<a href="javascript:void(0)" class="shopnav-tab comment active">评价</a>
+					</div>
+				</div>
+			</div>
+			<div class="shopmain clearfix container ng-scope">
+				<div class="shoprate ng-scope">
+					<div class="commentbox">
+						<div class="commentfilter">
+							<a href="#" class="commentfilter-item allOpinion ng-binding ng-scope active">全部</a>
+							<a href="#" class="commentfilter-item highOpinion ng-binding ng-scope">好评</a>
+							<a href="#" class="commentfilter-item middleOpinion ng-binding  ng-scope">中评</a>
+							<a href="#" class="commentfilter-item weakOpinion ng-binding ng-scope">差评</a>
+						</div>
+						<ul class="commentlist">
+							
+						</ul>
+					</div>
+					
+				</div>
+				<div class="shopmain-right ng-isolate-scope" style="margin-top: 20px;">
+					<div>
+						<div class="shopbulletin-section">
+							<h3 class="shopbulletin-title">总体评分</h3>
+							<div class="head clearfix">
+								<strong class="fl total"></strong>
+								<span class="star-ranking fl">
+							  	  <span class="star-score total-width" style="width: 100px"></span>
+							  	</span>
+							</div>
+							<div class="detail">
+						      
+						  </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

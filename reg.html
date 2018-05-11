@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="网站关键词">
+    <meta name="Description" content="网站介绍">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/iconfont.css">
+    <link rel="stylesheet" href="./css/reg.css">
+    <link rel="stylesheet" href="css/message.css" />
+</head>
+<body>
+    <div id="ajax-hook"></div>
+    <div class="wrap">
+        <div class="wpn">
+            <div class="form-data pos">
+                <!--<a href=""><img src="./img/logo.png" class="head-logo"></a>-->
+                <!--<p class="tel-warn hide"><i class="icon-warn"></i></p>-->
+                <form>
+                    <p class="p-input pos">
+                        <label for="tel">手机号</label>
+                        <input type="number" id="tel" autocomplete="off">
+                        <span class="tel-warn tel-err hide"><em></em><i class="icon-warn"></i></span>
+                    </p>
+                    <p class="p-input pos" id="sendcode">
+                        <label for="veri-code">输入验证码</label>
+                        <input type="number" id="veri-code">
+                        <a href="javascript:;" class="send">发送验证码</a>
+                        <span class="time hide"><em>120</em>s</span>
+                        <span class="error hide"><em></em><i class="icon-warn" style="margin-left: 5px"></i></span>
+                    </p>
+                    <p class="p-input pos" id="pwd">
+                        <label for="passport">输入密码</label>
+                        <input type="password" style="display: none"/>
+                        <input type="password" id="passport">
+                        <span class="tel-warn pwd-err hide"><em>密码不一致</em><i class="icon-warn" style="margin-left: 5px"></i></span>
+                    </p>
+                    <p class="p-input pos" id="confirmpwd">
+                        <label for="passport2">确认密码</label>
+                        <input type="password" style="position:absolute;top:-998px"/>
+                        <input type="password" id="passport2">
+                        <span class="tel-warn confirmpwd-err hide"><em>密码不一致</em><i class="icon-warn" style="margin-left: 5px"></i></span>
+                    </p>
+                </form>
+                <div class="reg_checkboxline pos">
+                    <span class="z"><i class="icon-ok-sign boxcol" nullmsg="请同意!"></i></span>
+                    <input type="hidden" name="agree" value="1">
+                    <div class="Validform_checktip"></div>
+                    <p>我已阅读并接受 <a href="#" target="_brack">《协议说明》</a></p>
+                </div>
+                <button class="lang-btn off log-btn">注册</button>
+                <div class="bottom-info">已有账号，<a href="./login.html">马上登录</a></div>
+                <!--<div class="third-party">
+                    <a href="#" class="log-qq icon-qq-round"></a>
+                    <a href="#" class="log-qq icon-weixin"></a>
+                    <a href="#" class="log-qq icon-sina1"></a>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js" ></script>
+<script type="text/javascript" src="js/agree.js" ></script>
+<script type="text/javascript" src="js/message.js" ></script>
+<script>
+	$(function(){
+		
+	$('#tel').keyup(function(event) {
+	$('.tel-warn').addClass('hide');
+		checkBtn();
+	});
+
+	$('#veri-code').keyup(function(event) {
+		$('.tel-warn').addClass('hide');
+		checkBtn();
+	});
+	$('#passport').keyup(function(event) {
+		$('.tel-warn').addClass('hide');
+		checkPsd ();
+		checkBtn();
+	});
+
+	$('#passport2').keyup(function(event) {
+		$('.tel-warn').addClass('hide');
+		checkPsd();
+		checkBtn();
+	});
+	function checkPsd () {
+		var psd = $.trim($('#passport').val());
+		var psd2 = $.trim($('#passport2').val());
+		if (psd != psd2) {
+			$(".pwd-err,.confirmpwd-err").removeClass("hide");
+		} else {
+			$(".pwd-err,.confirmpwd-err").addClass("hide");
+		}
+	}
+	// 按钮是否可点击
+	function checkBtn()
+	{
+		$(".log-btn").off('click');
+		var phone = $.trim($('#tel').val());
+		var code = $.trim($('#veri-code').val());
+		var psd = $.trim($('#passport').val());
+		var psd2 = $.trim($('#passport2').val());
+		if (phone != '' && code != '' && psd != '' && psd2 != '' && psd == psd2) {
+			$(".lang-btn").removeClass("off");
+			register();
+		} else {
+			$(".lang-btn").addClass("off");
+		}
+	}
+	function checkPassword(psd,psd2) {
+		if (psd != psd2) {
+			$(".pwd-err,.confirmpwd-err").removeClass("hide");
+			return false;
+		} else {
+			$(".pwd-err,.confirmpwd-err").addClass("hide");
+			return true;
+		}
+	}
+	function register () {
+			$(".log-btn").click(function(){
+			// var type = 'phone';
+			var phone = $.trim($('#tel').val());
+			var pcode = $.trim($('#veri-code').val());
+			var psd = $.trim($('#passport').val());
+			var psd2 = $.trim($('#passport2').val());
+			if (checkPhone(phone) && checkCode(pcode) && checkPassword(psd,psd2)) {
+				$(".log-btn").off('click').addClass("off");
+				$('.log-btn').html("正在注册");
+				$.ajax({
+		            url:"http://101.132.194.204:9090/producer/user/register",
+		            type: 'post',
+		            dataType: 'json',
+		            async: true,
+		            data: {"phone":phone,"code":pcode,"password":psd},
+		            success:function(data){
+		            	console.log(data)
+		            	if (data != null) {
+		            		$.message({
+								message:"注册成功",
+								type:'success'
+							});
+							setTimeout(function(){ window.location.href = "login.html"; }, 1000);
+		            	} else {
+		            		$('.log-btn').html("注册");
+		            	}
+		            },
+		            error:function(regMsg){
+		            	$('.log-btn').html("注册");
+		                $('.tel-err').removeClass('hide').text(regMsg.responseJSON.message);
+		            }
+		        });
+			} else {
+				$(".log-btn").off('click').addClass("off");
+				return false;
+			}
+		});
+	}
+	$(".form-data").delegate(".send","click",function () {
+		var phone = $.trim($('#tel').val());
+		var codeType = "register";
+		var data = {"phone":phone,"codeType":codeType}
+		if (checkPhone(phone)) {
+			$.ajax({
+	            url:"http://101.132.194.204:9090/producer/code/send/buildCode",
+	            type: 'post',
+	            dataType: 'json',
+	            async: true,
+	            data: data,
+	            success:function(data){
+	                if (data != null) {
+	                    $.message({
+							message:"发送成功",
+							type:'success'
+						});
+	                } 
+	            },
+	            error:function(regMsg){
+	                $.message({
+						message:"发送失败",
+						type:'error'
+					});
+	            }
+	        });
+	       	var oTime = $(".form-data .time"),
+			oSend = $(".form-data .send"),
+			num = parseInt(oTime.text()),
+			oEm = $(".form-data .time em");
+		    $(this).hide();
+		    oTime.removeClass("hide");
+		    var timer = setInterval(function () {
+		   	var num2 = num-=1;
+	            oEm.text(num2);
+	            if(num2==0){
+	                clearInterval(timer);
+	                oSend.text("重新发送验证码");
+				    oSend.show();
+	                oEm.text("120");
+	                oTime.addClass("hide");
+	            }
+	        },1000);
+		}
+    });
+	})
+	function checkPhone(phone){
+		var status = true;
+		if (phone == '') {
+			$('.tel-err').removeClass('hide').find("em").text('请输入手机号');
+			return false;
+		}
+		var param = /^1[34578]\d{9}$/;
+		if (!param.test(phone)) {
+			// globalTip({'msg':'手机号不合法，请重新输入','setTime':3});
+			$('.tel-err').removeClass('hide');
+			$('.tel-err').text('手机号不合法，请重新输入');
+			return false;
+		}
+		return status;
+	}
+	function checkCode(code){
+		if (code == '') {
+			 $('.tel-warn').removeClass('hide').text('请输入验证码');
+			return false;
+		} else {
+			 $('.tel-warn').addClass('hide');
+			return true;
+		}
+	}
+</script>
+</html>

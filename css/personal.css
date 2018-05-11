@@ -1,0 +1,752 @@
+a:hover { text-decoration: none; } 
+.page .userexinfo-container {
+    margin: 50px auto;
+    width: 960px;
+	}
+	.clearfix:after {
+    content: " ";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
+.orders-link-box {
+    background: #FFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    width: 230px;
+    padding-bottom: 20px;
+}
+.orders-link-box .link-group {
+    font-size: 16px;
+    color: #222;
+    margin: 30px 20px 0 30px;
+}
+.orders-link-box .link-group .title {
+    margin: 12px 0;
+}
+.orders-link-box .link-group .link-ul .icon-right {
+    background-image: url(../img/icon-right.png);
+    width: 8px;
+    height: 18px;
+    display: block;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 50%;
+    float: right;
+}
+.orders-link-box .link-group .link-ul li {
+    margin: 15px 0;
+}
+.orders-link-box .link-group .link-ul li a {
+    font-size: 14px;
+    color: #666;
+}
+.orders-link-box .link-group .link-ul .num {
+    color: #31BBAC;
+    margin-left: 5px;
+    position: relative;
+    top: 1px;
+}
+i {
+    font-style: italic;
+}
+a {
+    text-decoration: none;
+}
+li {
+    list-style: none;
+}
+ ul {
+    margin: 0;
+    padding: 0;
+}
+.page .userexinfo-container .userinfo-box {
+    float: right;
+}
+.user-info-box {
+    background: #FFF;
+    border: 1px solid #E5E5E5;
+    box-shadow: 0 5px 14px 0 rgba(0,0,0,.1);
+    border-radius: 4px;
+}
+.user-info-box .user-info {
+    width: 720px;
+    height: 209px;
+    background: #15B9B9;
+    background-image: linear-gradient(-90deg,#16ABB7 3%,#13D1BE 98%);
+    border-radius: 4px 4px 0 0;
+}
+.user-info-box .user-info .head-img {
+    width: 110px;
+    height: 110px;
+    border: 10px solid #88E2D9;
+    border-radius: 100%;
+    position: relative;
+    float: left;
+    top: 38px;
+    left: 30px;
+}
+.user-info-box .user-info .head-img img {
+    height: 100%;
+    width: 100%;
+    border-radius: 100%;
+    box-shadow: 0 3px 7px 0 rgba(22,149,141,.4);
+    border: 0;
+}
+.user-info-box .user-info .nick-name {
+    float: left;
+    color: #fff;
+    position: relative;
+    left: 51px;
+    top: 70px;
+    font-weight: 500;
+}
+.user-info-box .user-info .nick-name .nick-name-txt {
+    font-size: 26px;
+    margin-bottom: 5px;
+    color: #fff;
+}
+.user-info-box .user-info .nick-name .iconfont_level {
+    margin-left: 10px;
+    font-size: 15px;
+    position: relative;
+    top: -3px;
+    background: #fff;
+    border-radius: 2px;
+}
+.iconfont {
+    font-family: iconfont!important;
+    font-size: 12px;
+}
+.icon-quote, .iconfont {
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.user-info-box .user-info .nick-name .user-money {
+    font-size: 14px;
+    font-weight: 400;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.user-info-box .user-info .nick-name .user-money a {
+    color: #fff;
+}
+.user-info-box .user-info .user-setting {
+    color: #fff;
+    float: right;
+    font-size: 14px;
+    position: relative;
+    left: -30px;
+    top: 90px;
+}
+.recommend-list {
+    width: 680px;
+    background: #fff;
+    margin-top: 20px;
+    padding: 20px 20px 0;
+    border-radius: 4px;
+    border: 1px solid #e5e5e5;
+}
+.tabnavigation {
+    border-bottom: 2px solid #f4f4f4;
+    position: relative;
+}
+.tabnavigation-navitem.active {
+    font-weight: 700;
+    border-bottom: 3px solid #0089dc;
+}
+.tabnavigation-navitem {
+    display: inline-block;
+    margin-bottom: -2px;
+    padding: 0 10px;
+    height: 27px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+}
+.tabnavigation-navitem, .tabnavigation-rightitem {
+    line-height: 1em;
+}
+.profile-allorder {
+    font-size: 12px;
+}
+
+.tabnavigation-rightitem {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    color: #666;
+}
+.orderblock {
+    display: table;
+    padding: 20px 0 15px;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #eee;
+}
+.orderblock-rstinfo {
+    text-align: left;
+}
+
+.orderblock-item {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 12px;
+}
+.orderblock-rstinfo .logo {
+    float: left;
+    margin-right: 20px;
+}
+.orderblock-rstinfo .logo img {
+    width: 70px;
+    height: 70px;
+    vertical-align: top;
+}
+fieldset, img {
+    border: 0;
+}
+.orderblock-rstinfo .name {
+    font-size: 16px;
+    font-weight: 700;
+}
+.orderblock-rstinfo .name, .orderblock-rstinfo .product {
+    width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+h3 {
+	margin: 0px;
+	padding: 0px;
+}
+a.inherit {
+    color: inherit;
+}
+.orderblock-rstinfo .product {
+    margin: 10px 0;
+    color: #999;
+    width: 250px;
+}
+
+.orderblock-rstinfo .count {
+    color: #f04240;
+    font-style: normal;
+}
+.orderblock-time {
+    width: 85px;
+    color: #999;
+}
+.orderblock-item {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 12px;
+}
+.orderblock-price {
+    width: 140px;
+}
+.orderblock-item {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 12px;
+}
+.orderblock-price .total {
+    font-family: arial;
+    font-size: 16px;
+}
+.orderblock-price span {
+    color: #999;
+}
+.orderblock-rstinfo .productnum {
+    color: #999;
+}
+.orderblock-status {
+    width: 100px;
+}
+.orderblock-item {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 12px;
+}
+.orderblock-status .end {
+    color: #999;
+}
+.orderblock-status .status {
+    font-size: 16px;
+}
+.clearfix:after {
+    content: "";
+    display: table;
+    height: 0;
+    clear: both;
+}
+/*分割线*/
+.orders-box .orders {
+    width: 680px;
+    background: #FFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    padding: 20px 20px 0;
+    float: right;
+    position: relative;
+}
+.orders-box .orders .orders-head .orders-ul {
+    margin-top: 10px;
+}
+.orders-box .orders .orders-head .orders-ul .active {
+    color: #31BBAC;
+    border-bottom: 2px solid #31BBAC;
+}
+.orders-box .orders .orders-head .orders-ul li {
+    font-size: 16px;
+    color: #222;
+    line-height: 26px;
+    float: left;
+    width: 105px;
+    text-align: center;
+    height: 38px;
+    margin-right: 25px;
+    font-weight: 500;
+    /*cursor: pointer;*/
+}
+.orders-box .orders .orders-head .orders-ul li .num {
+    color: #31BBAC;
+    margin-left: 5px;
+}
+/*分割线2*/
+.profile-panel {
+    width: 680px;
+    background: #FFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    padding: 20px 20px 0;
+    float: right;
+    position: relative;
+    min-height: 565px;
+}
+.profile-paneltitle {
+    border-bottom: 2px solid #f4f4f4;
+    padding: 0 20px 11px;
+    font-size: 18px;
+    font-weight: 700;
+}
+.profile-panelcontent {
+    display: inline-block;
+    width: 100%;
+}
+
+.desktop-addresslist {
+    padding-top: 15px;
+    margin-right: -33px;
+    overflow: hidden;
+}
+
+.desktop-addressblock-buttons {
+    position: absolute;
+    right: 12px;
+    top: 14px;
+}
+.desktop-addressblock-button {
+    font-size: 12px;
+    color: #bbb;
+    border: 0;
+    background: 0 0;
+    cursor: pointer;
+    width: 30px;
+}
+.desktop-addressblock-name {
+    height: 22px;
+    cursor: default;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.desktop-addressblock-name {
+    color: #333;
+    margin-bottom: 10px;
+    padding-right: 60px;
+}
+.desktop-addressblock-name span {
+    margin-left: 5px;
+}
+.desktop-addressblock-address, .desktop-addressblock-mobile, .desktop-addressblock-name {
+    height: 22px;
+    cursor: default;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.desktop-addressblock-address {
+    color: #666;
+}
+.desktop-addressblock-mobile {
+    height: 22px;
+    cursor: default;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+button {
+	margin: 0px;
+	padding: 0px;
+}
+* {
+    box-sizing: inherit;
+}
+.desktop-addressblock-mask {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #000;
+    opacity: .5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
+.ng-hide {
+    display: none !important;
+}
+.desktop-addressblock-removebuttons {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin-top: 23px;
+}
+.desktop-addressblock-removebuttons p {
+    color: #fff;
+    vertical-align: top;
+    font-size: 14px;
+    line-height: 26px;
+}
+.desktop-addressblock-removebuttons .confirmdelete {
+    background: #0089dc;
+    color: #fff;
+}
+.desktop-addressblock-removebuttons .canceldelete, .desktop-addressblock-removebuttons .confirmdelete {
+    cursor: pointer;
+    border: 0;
+    border-radius: 2px;
+    margin-top: 5px;
+    width: 30px;
+    height: 24px;
+    padding: 0 10px;
+    line-height: 24px;
+}
+.desktop-addressblock-removebuttons .canceldelete {
+    margin-left: 10px;
+    background-color: #fff;
+}
+.desktop-addressblock-addblock {
+    vertical-align: top;
+    padding: 0;
+    text-align: center;
+    background: #fcfcfc;
+    color: #999;
+    cursor: pointer;
+}
+
+.desktop-addressblock {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+    height: 80px;
+    padding: 16px 12px 16px 20px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+.desktop-addressblock-addblock>i {
+    font-size: 20px;
+    margin-right: 4px;
+    display: inline-block;
+    margin-top: -2px;
+}
+
+/*订单详情*/
+.orderprogress-timeline {
+    position: relative;
+    display: table;
+    margin: 20px 0 40px;
+    padding-bottom: 30px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+}
+.orderprogress-timeline li {
+    position: relative;
+    display: table-cell;
+    color: #999;
+    text-align: center;
+    line-height: 4em;
+}
+.orderprogress-timeline li:after {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    margin-bottom: -9px;
+    margin-left: -9px;
+    width: 18px;
+    height: 18px;
+    border: 5px solid #f8f8f8;
+    border-radius: 50%;
+    background-color: #ddd;
+    content: "";
+}
+.orderprogress-timeline li.active:after {
+    background-color: #0089dc;
+}
+
+.orderprogress-timeline:after {
+    position: absolute;
+    bottom: 30px;
+    left: 10%;
+    width: 80%;
+    border-bottom: 1px solid #ededed;
+    content: "";
+}
+.orderprogress-card {
+    width: 100%;
+    margin: 20px 0;
+}
+.orderprogress-status {
+    position: relative;
+    padding: 24px 32px 0 30px;
+    min-height: 80px;
+    border: 1px solid #f8e5bb;
+    background-color: #fefdee;
+    line-height: 1;
+}
+.orderprogress-statustitle {
+    padding-bottom: 12px;
+    font-size: 16px;
+    color: #333;
+}
+.orderprogress-statusdesc {
+    padding-bottom: 8px;
+    line-height: 1.5;
+    font-size: 14px;
+    color: #999;
+}
+.orderprogress-statusbuttons {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    height: 40px;
+}
+.orderprogress-statusbuttons a.linktype {
+    color: #999;
+    text-decoration: underline;
+}
+.orderprogress-statusbuttons a {
+    display: inline-block;
+    line-height: 40px;
+    margin-left: 24px;
+    min-width: 100px;
+    text-align: center;
+}
+.orderprogress-rstinfo {
+    position: relative;
+    padding: 18px 30px 16px;
+    background-color: #f8f8f6;
+    border: 1px solid #eee;
+}
+.orderprogress-rstimg {
+    width: 44px;
+    margin-right: 12px;
+}
+.orderprogress-rstgrid, .orderprogress-rstimg {
+    height: 44px;
+    vertical-align: top;
+    display: inline-block;
+}
+fieldset, img {
+    border: 0;
+}
+.orderprogress-rstgrid {
+    line-height: 1;
+}
+.orderprogress-rstname {
+    padding-top: 2px;
+    font-size: 16px;
+    color: #333;
+}
+.orderprogress-rstextra {
+    padding-top: 12px;
+    font-size: 14px;
+    color: #999;
+}
+.orderprogress-rstextra span:first-child {
+    max-width: 250px;
+    padding-right: 50px;
+}
+.orderprogress-rstextra span {
+    max-width: 593px;
+}
+.orderprogress-rstextra span {
+    display: inline-block;
+    max-width: 375px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+*, :after, :before {
+    box-sizing: inherit;
+}
+.orderprogress-rstextra {
+    padding-top: 12px;
+    font-size: 14px;
+    color: #999;
+}
+.orderprogress-rstoperate {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+}
+.orderprogress-rstoperate a, .orderprogress-rstoperate span {
+    display: inline-block;
+    margin-left: 18px;
+    color: #999;
+    width: 65px;
+}
+h4 {
+	margin: 0px;
+	padding: 0px;
+}
+.orderprogress-cardtable {
+    display: table;
+    width: 100%;
+}
+.orderprogress-cardcell {
+    width: 538px;
+}
+
+.orderprogress-total {
+    padding-bottom: 32px;
+}
+.orderprogress-totalrow.orderprogress-totaltitle {
+    padding: 20px 0 16px;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+}
+.orderprogress-totalrow {
+    display: table;
+    width: 100%;
+    font-size: 14px;
+    color: #666;
+    padding-top: 24px;
+    line-height: 1;
+}
+.orderprogress-totalrow .cell.name {
+    padding-left: 30px;
+    width: 60%;
+    text-align: left;
+}
+.orderprogress-totalrow .cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+.orderprogress-totalrow .cell.quantity {
+    width: 10%;
+    text-align: center;
+}
+.orderprogress-totalrow .cell.price {
+    padding-right: 30px;
+    width: 30%;
+    text-align: right;
+}
+.orderprogress-totalrow {
+    display: table;
+    width: 100%;
+    font-size: 14px;
+    color: #666;
+    padding-top: 24px;
+    line-height: 1;
+}
+.orderprogress-baseline {
+    width: 100%;
+    padding-top: 20px;
+    margin-bottom: -4px;
+    border-bottom: 1px solid #eee;
+}
+.orderprogress-totalactual {
+    padding-top: 20px;
+    line-height: 1;
+    padding-right: 30px;
+    text-align: right;
+    font-size: 14px;
+    color: #333;
+}
+.orderprogress-timeline {
+    position: relative;
+    display: table;
+    margin: 20px 0 40px;
+    padding-bottom: 30px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+}
+.orderprogress-cardcell.rightside {
+    background-color: #fff;
+    border-right: 1px solid #eee;
+    width: auto;
+}
+.orderprogress-totalactual span {
+    font-size: 26px;
+    font-weight: 700;
+    color: #f74342;
+}
+.orderprogress-cardcell {
+    display: table-cell;
+    background-color: #f8f8f8;
+    border-left: 1px solid #eee;
+    vertical-align: top;
+    width: 360px;
+}
+.orderprogress-deliveryinfo {
+    padding: 0 30px;
+}
+.orderprogress-deliverytitle {
+    padding: 20px 0 4px;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+}
+.orderprogress-deliverygroup {
+    border-bottom: 1px dashed #eee;
+    padding: 20px 0 4px;
+}
+.orderprogress-deliverygroup p {
+    display: table;
+}
+.orderprogress-deliverygroup span {
+    display: table-cell;
+    vertical-align: top;
+    line-height: 18px;
+    word-break: break-word;
+}
+.orderprogress-deliverykey {
+    overflow: hidden;
+    width: 5em;
+    text-align: justify;
+    -moz-text-align-last: justify;
+    text-align-last: justify;
+}
+.orderprogress-deliverygroup span:after {
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    height: 12px;
+    content: '';
+}
+.orderprogress-roundborder {
+    background: url(//shadow.elemecdn.com/faas/desktop/media/img/halfround-border.76b0e2.png);
+    height: 9px;
+    margin-top: -8px;
+}

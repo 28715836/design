@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点外卖</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<link rel="stylesheet" href="css/personal.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/store.js" ></script>
+<script>
+	var userInfo = null;
+	$(function(){
+			user();
+			$(".btn-upload").find("button").click(function(){
+				$(".ipt-file").click();
+			});
+			
+			$("input[type=file]").change(function(e){
+				var files = new FormData($("#imgFile")[0]);  
+				$.ajax({
+				contentType: false,
+	       		processData: false,
+				type:"post",
+				url:"http://101.132.194.204:9090/producer/fileUpload/imge",
+				data:files,
+				async:false,
+				success: function (data) {
+					if (data.length != 0) {
+						updateHeadPic(data);
+					}
+				},
+				error:function (regMsg) {
+					alert(regMsg.responseJSON.message)
+				}
+				})
+			});
+		});
+		function updateHeadPic(data) {
+	    var data=JSON.stringify({"headPic":data[0].filePath});
+			$.ajax({
+				contentType:"application/json;charset=utf-8",
+				type:"post",
+				url:"http://101.132.194.204:9090/producer/user/updateUser/"+userInfo.id,
+				data:data,
+				async:false,
+				success: function (data) {
+					user();
+				},
+				error:function (regMsg) {
+					alert(regMsg.responseJSON.message)
+				}
+			})
+		}  
+		function user () {
+			var Request = requestURL();
+			var access_token = localStorage.getItem("token")
+			if (access_token) {
+				var user = querySelf(access_token);
+				console.log(user)
+				if(user != null) {
+					userInfo = user;
+					if (user.headPic != null) {
+						$(".head-img").attr('src',user.headPic);
+					}
+					$(".nick-name").text(user.name);
+					$(".phone").text(user.phone);
+				} else {
+					window.location.href = "login.html";
+				}
+			} else {
+				window.location.href = "login.html";
+			}
+		}
+		function showNickName () {
+			$(".dialog-body").html('<div class="row">'+
+					'<label class="field-name">当前昵称</label>'+
+					'<span class="field-value">'+userInfo.name+'</span>'+
+				'</div>'+
+				'<div class="row">'+
+					'<label class="field-name">新昵称</label>'+
+					'<div class="field-input input-normal">'+
+						'<input type="text" class="new-nick-name"/>'+
+						'<p class="error-msg">密码不一致，请重新输入</p>'+
+					'</div>'+
+				'</div>');
+				$(".button-group").html('<button class="button button-ok btn-disabled" onclick="updateNickName()">确认修改</button>'+
+				'<button class="button button-cancel" data-dismiss="modal">取消</button>');
+				$('#updatePassword').modal('show');
+		}
+		function updateNickName() {
+			var newNickName = $(".new-nick-name").val();
+			if (newNickName == null || newNickName == '') {
+				$(".error-msg").css({"display":"block"});
+				$(".field-input").addClass("input-error");
+			}
+			var data=JSON.stringify({"name":newNickName});
+			$.ajax({
+				contentType:"application/json;charset=utf-8",
+				type:"post",
+				url:"http://101.132.194.204:9090/producer/user/updateUser/"+userInfo.id,
+				data:data,
+				async:false,
+				success: function (data) {
+					//location.reload();
+				},
+				error:function (regMsg) {
+					alert(regMsg.responseJSON.message)
+				}
+				})
+			$('#updatePassword').modal('hide');
+		}
+
+		//显示修改密码弹窗
+		function showUpdatePassword () {
+			$(".dialog-body").html('<div class="row">'+
+					'<label class="field-name">当前密码</label>'+
+					'<div class="field-input input-normal">'+
+						'<input type="password" class="out-password"/>'+
+					'</div>'+
+				'</div>'+
+				'<div class="row">'+
+					'<label class="field-name">密码</label>'+
+					'<div class="field-input input-normal">'+
+						'<input type="password" class="new-password"/>'+
+					'</div>'+
+				'</div>'+
+				'<div class="row">'+
+					'<label class="field-name">确认密码</label>'+
+					'<div class="field-input input-normal">'+
+						'<input type="password" class="confirm-new-password"/>'+
+					'</div>'+
+				'</div>');
+				$(".button-group").html('<button class="button button-ok btn-disabled" onclick="updatePassword()">确认修改</button>'+
+				'<button class="button button-cancel" data-dismiss="modal">取消</button>');
+				$('#updatePassword').modal('show');
+		}
+		function updatePassword () {
+			var confirmNewPassword = $(".confirm-new-password").val();
+			var newPassword = $(".new-password").val();
+			var outPassword = $(".out-password").val();
+			if (confirmNewPassword != newPassword) {
+				alert("密码不一致，请重新输入");
+			}
+			$.ajax({
+			contentType:"application/json;charset=utf-8",
+			type:"get",
+			url:"http://101.132.194.204:9090/producer/user/updateOutPassword/"+userInfo.id,
+			data:{"outPassword":outPassword,"newPassword":newPassword},
+			async:false,
+			success: function (data) {
+				logout();
+			},
+			error:function (regMsg) {
+				alert(regMsg.responseJSON.message)
+			}
+			})
+			 $('#updatePassword').modal('hide');
+		}
+		
+		
+</script>
+<style>
+	
+</style>
+</head>
+<body style="background-color: #f6f6f6;">
+<script type="text/javascript" src="js/header.js" ></script>
+<div class="page index">
+	<div class="userexinfo-container">
+		<div class="clearfix">
+			<script type="text/javascript" src="js/menu.js" ></script>
+			<div class="address-box">
+				<div class="profile-panel">
+					<h3 class="profile-paneltitle"><span>个人资料</span></h3>
+					<div class="profile-panelcontent">
+						<div class="item clearfix">
+							<div class="field-name">
+								<span>头像</span>
+							</div>
+							<div class="field-value">
+								<img src="http://p0.meituan.net/mmc/89bec9d64cde38d441cf976f751c482e3788.png@120w_120h_1e_1c" alt="" class="head-img">
+							</div>
+							<div class="upload-container">
+								<div class="btn-upload">
+									<button class="btn-change" >修改</button>
+									<form id="imgFile">
+										<input type="file" accept="image/*" name="files" class="ipt-file">
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="item clearfix">
+							<div class="field-name">
+								<span>昵称</span>
+							</div>
+							<div class="field-value">
+								<span class="value nick-name">TEm975083837</span>
+							</div>
+							<button class="btn-change change-nickname" onclick="showNickName()">修改</button>
+						</div>
+						<div class="item clearfix">
+							<div class="field-name">
+								<span>换绑手机</span>
+							</div>
+							<div class="field-value">
+								<span class="value phone">TEm975083837</span>
+							</div>
+							<button class="btn-change change-nickname">换绑</button>
+						</div>
+						<div class="item clearfix">
+							<div class="field-name">
+								<span>登录密码</span>
+							</div>
+							<div class="field-value">
+								<span class="value">安全强度 ：弱</span>
+							</div>
+							<button class="btn-change change-nickname" onclick="showUpdatePassword()">修改</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" style="top: 150px;" id="updatePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 480px;margin: 0 auto;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					修改密码
+				</h4>
+			</div>
+			<div class="dialog-body">
+				
+			</div>
+			<div class="button-group">
+				<!--<button class="button button-ok btn-disabled" onclick="updatePassword()">确认修改</button>
+				<button class="button button-cancel" data-dismiss="modal">取消</button>-->
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+</body>
+</html>

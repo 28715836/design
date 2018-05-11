@@ -1,0 +1,32 @@
+/* commons */
+a { color: #277DA8; text-decoration: none }
+a:hover { color: #48A5D4 }
+
+body { background: url('http://wbotelhos.com/images/background.png') #E7E7E7; font: normal 10px/1.6 'Helvetica Neue', 'Lucida Grande', Helvetica, Arial, sans-serif }
+
+footer { font-size: 1.3em; margin: 0 auto; overflow: auto; padding-bottom: 15px; padding-top: 10px; text-align: center; width: 1100px }
+
+h2 { border-bottom: 1px solid #DEDEDE; clear: right; color: #444; font-size: 2.6em; letter-spacing: .5px; line-height: 1.3em; padding-bottom: 3px }
+h2 a { color: #444 }
+
+h3 { color: #555; font-size: 1.6em; letter-spacing: .5px; }
+
+ul { margin-left: 0; padding-left: 22px }
+ul li { font-size: 1.3em }
+
+.demo { margin-bottom: 10px }
+.demo input, .demo textarea, .demo select { border: 1px solid #999; border-radius: 5px; color: #333; display: inline-block; height: 27px; font-size: 1.5em; text-align: center; width: 135px; vertical-align: middle }
+
+.demo input:focus, .demo textarea:focus, .demo select:focus { border: 1px solid #95BDD4 }
+.demo input:hover, .demo textarea:hover, .demo select:hover { border: 1px solid #BDBDBD }
+
+.demo textarea { resize: none; height: 27px }
+.demo select { text-align: left }
+
+.demo .target-demo { display: inline-block; vertical-align: middle }
+
+.demo div.hint { background-color: #F8F8F8; border-radius: 5px; color: #333; display: inline-block; height: 27px; font-size: 1.5em; text-align: center; width: 135px; vertical-align: middle }
+
+.demo label { color: #444; font-size: 1.7em; letter-spacing: .7px; margin-right: 5px; padding-left: 6px; vertical-align: middle }
+
+.demo a.run { font-size: 1.5em; margin-left: 5px; letter-spacing: .7px; vertical-align: middle }

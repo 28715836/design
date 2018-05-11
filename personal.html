@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点外卖</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<link rel="stylesheet" href="css/personal.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+	<script>
+		$(function(){
+			var Request = requestURL();
+			var access_token = localStorage.getItem("token")
+			if (access_token) {
+				var user = querySelf(access_token);
+				if(user != null) {
+					$(".nick-name-txt").text(user.name);
+					$('.user-money').find('span').text(user.money.toFixed(2));
+					$('.head-img').find("img").attr('src',user.headPic);
+					order(user.id,-1,true);
+				} else {
+					window.location.href = "login.html";
+				}
+			} else {
+				window.location.href = "login.html";
+			}
+       });
+	</script>
+<script type="text/javascript" src="js/store.js"></script>
+</head>
+<body style="background-color: #f6f6f6;">
+<script type="text/javascript" src="js/header.js" ></script>
+<div class="page index">
+	<div class="userexinfo-container">
+		<div class="clearfix">
+			<script type="text/javascript" src="js/menu.js" ></script>
+			<div class="userinfo-box">
+				<div class="my-page">
+					<div class="user-info-box">
+						<div class="user-info">
+							<div class="head-img">
+								<a href="#">
+									<img src="//s0.meituan.net/bs/fe-web-meituan/e3064a3/img/head-img.png" alt="">
+								</a>
+							</div>
+							<div class="nick-name">
+								<!--<a href="http://www.meituan.com/account/settings" target="_blank">-->
+									<p class="nick-name-txt">
+										TEm975083837
+									</p>
+								<!--</a>-->
+								<p class="user-money">我的余额：￥  <span>0.00</span>   
+									<a href="http://www.meituan.com/account/charge" target="_blank">充值卡充值</a>
+								</p>
+							</div>
+							<a href="info.html" class="user-setting">个人信息设置 &gt;</a>
+						</div>
+					</div>
+				</div>
+				<div class="recommend-list">
+					<div class="tabnavigation">
+						<a class="tabnavigation-navitem active">最近订单</a> 
+						<a class="tabnavigation-rightitem profile-allorder" href="order.html#status=0">查看全部订单&gt;</a>
+					</div>
+					<div class="profile-order-content">
+						<!--<div class="orderblock ng-isolate-scope">
+							<div class="orderblock-item orderblock-rstinfo clearfix">
+								<a class="logo" href="/shop/157530143">
+									<img alt="商家 LOGO" src="//fuss10.elemecdn.com/d/56/a0fe124d5cea0fd94e5e4bfcc09d9jpeg.jpeg?imageMogr2/thumbnail/70x70/format/webp/quality/85"></a>
+									<h3 class="name">
+										<a class="inherit ng-binding" href="/shop/157530143">极味肥牛饭(鲁港店)</a>
+									</h3>
+									<p class="product ng-binding">麻辣金针肥牛中份+米饭1份 / 极味蕃茄肥牛中份+米饭1份</p>
+									<a class="productnum" href="order/id/3021342723990650892">共<i class="count ng-binding">3</i>个菜品&gt;</a>
+							</div>
+							<div class="orderblock-item orderblock-time ng-binding">2018-04-01 17:41<br></div>
+							<div class="orderblock-item orderblock-price">
+								<p class="total ng-binding">¥28.00</p>
+								<span class="ng-binding"></span>
+							</div>
+							<div class="orderblock-item orderblock-status">
+								<p class="status ng-binding end">订单已完成</p>
+								<a class="statuslink ng-binding" href="orderDetail.html">订单详情</a>
+							</div>
+						</div>-->
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

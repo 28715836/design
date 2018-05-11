@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点外卖</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<link rel="stylesheet" href="css/personal.css" />
+<link rel="stylesheet" href="css/message.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/store.js" ></script>
+<script type="text/javascript" src="js/message.js" ></script>
+<script>
+	var userInfo = null;
+	var orderNum = '';
+	var totalPrice = 0; 
+	$(function(){
+			var access_token = localStorage.getItem("token")
+			if (access_token) {
+				var user = querySelf(access_token);
+				if(user != null) {
+					var data = JSON.parse(sessionStorage.getItem("data"));
+					userInfo = user;
+					if (data.length == 0) {
+						$(".nodata").removeClass("ng-hide");
+						$(".container").addClass("ng-hide");
+					} else {
+						$(".nodata").addClass("ng-hide");
+						$(".container").removeClass("ng-hide");
+						showOrder(data);
+						showAddressInfo(user.id);
+					}
+				} else {
+					window.location.href = "login.html";
+				}
+			} else {
+				window.location.href = "login.html";
+		}
+		$(".checout-showmoreaddress").eq(0).click(function(){
+			$(this).addClass("ng-hide").siblings("a").removeClass("ng-hide");
+			$(".checkout-address-list").addClass("showmore");
+		})
+		$(".checout-showmoreaddress").eq(1).click(function(){
+			$(this).addClass("ng-hide").siblings("a").removeClass("ng-hide");
+			$(".checkout-address-list").removeClass("showmore");
+		})
+		$(".checkout-address").click(function(){
+			$(this).addClass("active").siblings().removeClass("active");
+		})
+		$(".btn-stress").click(function(){
+			var addressId = $(".checkout-address-list").find(".active").find(".ng-hide").text();
+			var goodsOrders = [];
+			data.forEach(function(item){
+				goodsOrders.push({"goodsId":item.goodsId,"storeId":item.storeId,"goodsNum":item.num});
+			})
+			var remark = $(".checkout-input").val();
+			$.ajax({
+				contentType:"application/json;charset=utf-8",
+				type:"post",
+				url:"http://101.132.194.204:9090/producer/order/createOrder/"+userInfo.id+"?addressId="+addressId+"&remake="+remark,
+				data:JSON.stringify(goodsOrders),
+				async:false,
+				success: function (data) {
+					console.log(data);
+					orderNum = data[0].orderNum;
+					if (data != null) {
+						$.message({
+							message:'生成订单成功',
+							type:'success'
+						});
+						$(".btn-stress").parent().html('<button class="btn btn-primary" onclick="playOrder()">继续支付</button>');
+						playOrder ();
+					}
+				}
+			})
+		})
+	})
+	
+	function showOrder (data) {
+		var goodsList = [];
+		var totalNum = 0;
+		data.forEach(function(item){
+			totalNum += item.num;
+			totalPrice += (item.price)*(item.num);
+			goodsList.push('<dd>'+
+			'<div class="checkoutcart-tablerow">'+
+				'<div class="cell itemname ng-binding">'+item.name+'</div>'+
+				'<div class="cell itemquantity">'+item.num+'</div>'+
+				'<div class="cell itemtotal ng-binding">¥'+(item.price)*(item.num)+'</div>'+
+			'</div>'+
+		'</dd>');
+		})
+		$(".checkoutcart-group").html(goodsList);
+		$(".shop-cartpieces").text(totalNum);
+		$(".shop-cartfooter-text").text(totalPrice.toFixed(2));
+	}
+	//确认下单
+	function playOrder () {
+			$(".dialog-body").html('<div class="row">'+
+					'<label class="field-name">支付金额</label>'+
+					'<span style="color: red;" class="field-value">'+totalPrice.toFixed(2)+'</span>'+
+				'</div>'+
+				'<div class="row">'+
+					'<label class="field-name">支付密码</label>'+
+					'<div class="field-input input-normal">'+
+						'<input type="password" class="password"/>'+
+						'<p class="error-msg">密码错误，请重新输入</p>'+
+					'</div>'+
+				'</div>');
+				$(".button-group").html('<button class="button button-ok btn-disabled" onclick="payment()">确认</button>'+
+				'<button class="button button-cancel" data-dismiss="modal">取消</button>');
+				$('#updatePassword').modal('show');
+		}
+	//支付
+	function payment () {
+		console.log(orderNum);
+		console.log($(".password").val());
+		console.log(totalPrice);
+		var data = {"orderNum":orderNum,"password":$(".password").val(),"price":totalPrice};
+		$.ajax({
+		type:"post",
+		url:"http://101.132.194.204:9090/producer/order/payment/"+userInfo.id,
+		data:data,
+		async:false,
+		success: function (data) {
+			$.message({
+					message:'支付成功，正在跳转',
+					type:'success'
+				});
+			sessionStorage.removeItem("data");
+			setTimeout(function(){window.location.href = "orderDetail.html?orderNum="+orderNum;},3000);
+		},
+		error: function (regMsg) {
+			$.message({
+						message:regMsg.responseJSON.message,
+						type:'error'
+				});
+		}
+		})
+	}
+	function showAddressInfo (id) {
+		$.ajax({
+		type:"get",
+		url:"http://101.132.194.204:9090/producer/address/selectAddressById/"+id,
+		async:false,
+		success: function (data) {
+			console.log(data)
+			if (data) {
+				var addressList = [];
+				var li = '';
+				data.forEach(function(item){
+					if (item.def == 1) {
+						li = '<li class="checkout-address ng-scope">';
+					} else {
+						li = '<li class="checkout-address ng-scope active">'
+					}
+					addressList.push(li+'<i class="checkout-address-icon icon-location-line"></i>'+
+						'<div class="checkout-address-info">'+
+						    '<span class="ng-hide">'+item.id+'</span>'+
+							'<p>'+item.name+" "+(item.gender==1?"先生":"女士")+" "+item.phone+'</p>'+
+							'<p class="color-weak ng-binding">'+item.address+'</p>'+
+						'</div>'+
+					'</li>');
+				})
+				addressList.push('<a href="javascript:void(0)" class="checout-showmoreaddress">显示更多地址<i class="icon-arrow-down"></i></a>'+
+					'<a href="javascript:void(0)" class="checout-showmoreaddress ng-hide">收起<i class="icon-arrow-down"></i></a>');
+				$(".checkout-address-list").html(addressList);
+			}
+		}
+	})
+}
+</script>
+<style>
+	.container, body.hidesidebar .container {
+    width: 1180px;
+}
+.container {
+    font-size: 14px;
+    width: 960px;
+    margin: 0 auto;
+}
+*, :after, :before {
+    box-sizing: inherit;
+}
+.checkout-cart {
+    float: left;
+    width: 34%;
+}
+.checkout-cart, .checkout-content {
+    margin-top: 12px;
+    background-color: #fff;
+}
+.checkoutcart-container {
+    border: 1px solid #e0e0e0;
+    border-bottom: 0;
+    line-height: 1;
+    background: url(img/222.png) bottom repeat-x;
+}
+.checkoutcart-title {
+    position: relative;
+    padding: 20px;
+    height: 60px;
+    border-bottom: 1px solid #eee;
+}
+.checkoutcart-title h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+}
+.checkoutcart-tablerow.tablehead {
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    color: #999;
+}
+.checkoutcart-tablerow {
+    display: table;
+    table-layout: fixed;
+    background-color: #fcfaf8;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 18px 0 20px;
+    width: 88%;
+    font-size: 14px;
+    color: #666;
+}
+.checkoutcart-tablerow.extra .cell, .checkoutcart-tablerow.tablehead .cell {
+    border: 0;
+}
+.checkoutcart-tablerow .itemname {
+    padding: 5px 0 3px 10px;
+    width: 45%;
+    font-size: 12px;
+    line-height: 1.3;
+}
+.checkoutcart-tablerow .cell {
+    display: table-cell;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+.checkoutcart-tablerow .itemquantity {
+    width: 30%;
+    text-align: center;
+    white-space: nowrap;
+}
+.checkoutcart-tablerow .itemtotal {
+    padding-right: 10px;
+    text-align: right;
+    width: 25%;
+}
+.checkoutcart-group, .checkoutcart-tablerow.extra {
+    margin-top: -1px;
+    background-color: #fff;
+}
+dl,dt,dd,h2,ul,li{
+	margin: 0px;
+	padding: 0px;
+}
+.checkoutcart-grouptitle {
+    border-bottom: 1px solid #eee;
+    padding-left: 30px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+}
+.checkoutcart-total {
+    padding: 52px 28px 10px;
+    font-size: 24px;
+    text-align: right;
+}
+.color-stress {
+    color: #f74342;
+}
+.checkoutcart-total .num {
+    font-size: 46px;
+}
+.checkoutcart-totalextra {
+    padding: 0 30px 22px;
+    font-size: 12px;
+    color: #666;
+    text-align: right;
+}
+.checkout-content {
+    padding: 25px 20px 150px 30px;
+    float: right;
+    width: 60%;
+    border: 1px solid #e0e0e0;
+}
+.checkout-cart, .checkout-content {
+    margin-top: 12px;
+    background-color: #fff;
+}
+.checkout-select {
+    margin-bottom: 40px;
+}
+.checkout-content h2 {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.checkout-addaddress {
+    float: right;
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 400;
+}
+.checkout-address:first-child {
+    border-top: 1px solid #eee;
+}
+.checkout-address {
+    position: relative;
+    margin-bottom: -1px;
+    padding: 15px 20px 15px 0;
+    width: 96%;
+    border: 1px solid #eee;
+    display: none;
+    cursor: pointer;
+}
+.checkout-address.active {
+    position: relative;
+    display: table;
+    border-color: #0089dc;
+    z-index: 1;
+    background: url(img/data-image.png) right bottom no-repeat;
+}
+.checkout-address-icon {
+    display: table-cell;
+    width: 64px;
+    text-align: center;
+    vertical-align: middle;
+    border-right: 1px solid #eee;
+    font-size: 30px;
+    color: #ccc;
+}
+.checkout-address-info {
+    display: table-cell;
+    padding-left: 16px;
+}
+.color-weak {
+    color: #666;
+}
+.checout-showmoreaddress {
+    display: inline-block;
+    margin-top: 8px;
+    color: #999;
+}
+.checout-showmoreaddress {
+    display: inline-block;
+    margin-top: 8px;
+    color: #999;
+}
+.ng-hide {
+    display: none !important;
+}
+.checkout-select {
+    margin-bottom: 40px;
+}
+.checkout-content h2 {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.checkout-pay-tip {
+    margin-left: 16px;
+    font-size: 12px;
+    font-weight: 400;
+}
+.color-tip {
+    color: #ff9c00;
+}
+.checkout-pay.active {
+    border-color: #0089dc;
+    background: url(img/data-image.png) right bottom no-repeat;
+}
+.checkout-pay:first-child {
+    margin-right: 1.6%;
+}
+@media (min-width: 1260px)
+.checkout-pay {
+    height: auto;
+}
+.checkout-pay {
+    float: left;
+    padding: 11px 20px;
+    width: 49.2%;
+    height: 50px;
+    border: 1px solid #eee;
+    cursor: pointer;
+}
+.checkout-pay p:first-child {
+    margin-bottom: 4px;
+}
+.color-mute {
+    color: #999;
+}
+.checkout-select {
+    margin-bottom: 40px;
+}
+.checkout-info {
+    margin-bottom: 20px;
+}
+.checkout-infolabel {
+    display: inline-block;
+    margin-right: 20px;
+    width: 5em;
+    text-align: right;
+}
+.checkout-infolabel {
+    display: inline-block;
+    margin-right: 20px;
+    width: 5em;
+    text-align: right;
+}
+.checkout-input {
+    padding: 5px 10px;
+    width: 235px;
+    border: 1px solid #e0e0e0;
+    outline: 0;
+    color: #666;
+}
+.btn-stress {
+    background-color: #f74342;
+    color: #fff;
+    border: none;
+}
+.btn-lg {
+    padding: 10px 20px;
+    font-size: 15px;
+}
+.checkout-address-list.showfirst .checkout-address:first-child, .checkout-address-list.showmore .checkout-address {
+    display: block;
+}
+</style>
+</head>
+<body style="background-color: #f6f6f6;">
+<script type="text/javascript" src="js/header.js" ></script>
+<div class="page index">
+	<div class="nodata ng-isolate-scope">
+		<p class="nodata-container ng-binding">你的购物车是空的，快去<a href="homePage.html"> 下单 </a>吧！
+		</p>
+	</div>
+	<div class="container clearfix ng-scope ng-hide">
+		<div class="checkout-cart ng-scope ng-isolate-scope">
+			<div class="checkoutcart-container">
+				<div class="checkoutcart-title">
+					<h2>订单详情</h2>
+				</div>
+				<div class="checkoutcart-tablerow tablehead">
+					<div class="cell itemname">商品</div>
+					<div class="cell itemquantity">份数</div>
+					<div class="cell itemtotal">小计</div>
+				</div>
+				<dl class="checkoutcart-group ng-scope">
+					<!--<dt class="checkoutcart-grouptitle ng-binding">购物车</dt>-->
+					<!--<dd>
+						<div class="checkoutcart-tablerow">
+							<div class="cell itemname ng-binding">粉蒸肉加配菜加米饭</div>
+							<div class="cell itemquantity">1</div>
+							<div class="cell itemtotal ng-binding">¥15.00</div>
+						</div>
+					</dd>
+					<dd>
+						<div class="checkoutcart-tablerow">
+							<div class="cell itemname ng-binding">粉蒸肉加配菜加米饭</div>
+							<div class="cell itemquantity">1</div>
+							<div class="cell itemtotal ng-binding">¥15.00</div>
+						</div>
+					</dd>-->
+				</dl>
+				<div class="checkoutcart-total color-stress">
+					¥<span class="shop-cartfooter-text num ng-binding">0.00</span>
+				</div>
+				<div class="checkoutcart-totalextra">共 
+					<span class="shop-cartpieces ng-binding">0</span> 份商品
+				</div>
+			</div>
+		</div>
+		<div class="checkout-content ng-scope">
+			<div class="checkout-select ng-isolate-scope">
+				<h2>收货地址<a class="checkout-addaddress">添加新地址</a></h2>
+				<ul class="checkout-address-list">
+					<!--<li class="checkout-address ng-scope active">
+						<i class="checkout-address-icon icon-location-line"></i>
+						<div class="checkout-address-info">
+							<p>杨凯 先生 13083037022</p>
+							<p class="color-weak ng-binding">安徽工程大学机电学院(文津校区)文津西路8号</p>
+						</div>
+					</li>
+					<li class="checkout-address ng-scope">
+						<i class="checkout-address-icon icon-location-line"></i>
+						<div class="checkout-address-info">
+							<p>杨凯 先生 13083037022</p>
+							<p class="color-weak ng-binding">安徽工程大学机电学院(文津校区)文津西路8号</p>
+						</div>
+					</li>
+					<a href="javascript:void(0)" class="checout-showmoreaddress">显示更多地址<i class="icon-arrow-down"></i></a>
+					<a href="javascript:void(0)" class="checout-showmoreaddress ng-hide">收起<i class="icon-arrow-down"></i></a>-->
+				</ul>
+			</div>
+			<div class="checkout-select">
+				<h2 class="checkout-title">付款方式<span class="color-tip checkout-pay-tip">推荐使用在线支付，不用找零，优惠更多</span></h2>
+				<ul class="clearfix">
+					<li class="checkout-pay ng-scope active">
+						<p ng-bind="pay.title" class="ng-binding">在线支付</p>
+						<p class="color-mute ng-binding" >支持微信、支付宝、QQ钱包及大部分银行卡</p>
+					</li>
+				</ul>
+			</div>
+			<div class="checkout-select">
+				<h2 class="checkout-title">其他信息</h2>
+				<div class="checkout-info">
+					<span class="checkout-infolabel">配送方式</span> 
+					<span>本订单由[宜家酸菜鱼(龙虾、花甲)]提供配送</span>
+				</div>
+				<div class="checkout-info">
+					<span class="checkout-infolabel">订单备注</span> 
+					<span><input class="checkout-input ng-pristine ng-valid"></span>
+				</div>
+			</div>
+			<div>
+				<button class="btn-stress btn-lg ng-binding ng-isolate-scope">确认下单</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" style="top: 150px;" id="updatePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 480px;margin: 0 auto;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					修改密码
+				</h4>
+			</div>
+			<div class="dialog-body">
+				
+			</div>
+			<div class="button-group">
+				<!--<button class="button button-ok btn-disabled" onclick="updatePassword()">确认修改</button>
+				<button class="button button-cancel" data-dismiss="modal">取消</button>-->
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+</body>
+</html>

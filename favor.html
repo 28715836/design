@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点外卖</title>
+<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<link rel="stylesheet" href="css/personal.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+		var Request = requestURL();
+			var access_token = localStorage.getItem("token")
+			if (access_token) {
+				var user = querySelf(access_token);
+				if(user != null) {
+					selectFavorByUserId(user.id);
+				} else {
+					window.location.href = "login.html";
+				}
+			} else {
+				window.location.href = "login.html";
+		}
+		$('.favor-rstblock-cancel').click(function () {
+			$(this).parent().siblings(".favor-rstblock-mask").removeClass("hide");
+		});
+		$('.btn-cancel').click(function () {
+			$(this).parent().parent().addClass("hide");
+		})
+	})
+	function showMask (flag,obj) {
+		if (flag) {
+			$(obj).parent().siblings(".show-mask").removeClass("ng-hide");
+		} else {
+			$(obj).parents(".show-mask").addClass("ng-hide");
+		}
+		
+	}
+</script>
+<script type="text/javascript" src="js/store.js"></script>
+<style>
+	.favor-restaurants {
+    width: 680px;
+    padding-left: 30px;
+}
+.favor-restaurants {
+    margin-top: 30px;
+    width: 800px;
+}
+.favor-rstblock {
+    width: 290px;
+    height: 220px;
+    float: left;
+    margin: 0 40px 20px 0;
+    position: relative;
+    border: 1px solid #eee;
+}
+.favor-rstblock-header {
+    height: 40px;
+    padding-top: 46px;
+    position: relative;
+    background-color: #ccc;
+    overflow: hidden;
+}
+.favor-rstblock-headerbg {
+    position: absolute;
+    width: 100%;
+    height: 85px;
+    left: 0;
+    top: 0;
+    -webkit-filter: blur(3px);
+    filter: blur(3px);
+}
+.favor-rstblock-name {
+    position: relative;
+    display: block;
+    padding-left: 102px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+    line-height: 2em;
+    color: #fff;
+}
+.favor-rstblock-logo {
+    left: 12px;
+}
+.favor-rstblock-logo {
+    position: absolute;
+    top: 30px;
+    left: 4px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.favor-rstblock-starrating {
+    position: relative;
+    display: inline-block;
+    margin-left: 108px;
+    margin-top: 6px;
+    color: #ccc;
+}
+.favor-rstblock-content {
+    margin: 20px 0 18px;
+    text-align: center;
+    font-size: 0;
+    height: 30px;
+}
+.favor-rstblock-item:first-child {
+    border-left: none;
+}
+.favor-rstblock-item {
+    width: 86px;
+}
+.favor-rstblock-item {
+    display: inline-block;
+    vertical-align: middle;
+    width: 78px;
+    height: 30px;
+    border-left: 1px solid #eee;
+    font-size: 12px;
+}
+.favor-rstblock-item:first-child {
+    border-left: none;
+}
+.favor-rstblock-item p:first-child {
+    margin-top: -5px;
+    margin-bottom: 8px;
+    color: #999;
+}
+.favor-rstblock-item .value {
+    color: #666;
+    font-size: 20px;
+    line-height: 1em;
+}
+.favor-rstblock-item .time::after {
+    content: "分";
+    font-size: 12px;
+}
+.favor-rstblock-activity {
+    padding-left: 20px;
+}
+.favor-rstblock-activity {
+    position: relative;
+    padding-left: 4px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+.favor-rstblock-cancel {
+    position: absolute;
+    right: 16px;
+    top: 10px;
+    color: #ddd;
+    font-size: 20px;
+    cursor: pointer;
+}
+.favor-rstblock-mask.hide {
+    display: none;
+}
+.favor-rstblock-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    background-color: rgba(0,0,0,.7);
+    text-align: center;
+    color: #fff;
+}
+.favor-rstblock-mask .tip {
+    margin-bottom: 20px;
+    padding-top: 70px;
+}
+p, button{
+	margin:0px;
+	padding: 0px;
+}
+.favor-rstblock-mask .btn-confirm {
+	padding: 3px;
+    margin-right: 10px;
+    border: 1px solid red;
+    background-color: red;
+}
+.favor-rstblock-mask button {
+    color: #fff;
+    width: 50px;
+}
+.favor-rstblock-mask .btn-cancel {
+    padding: 3px;
+    background-color: transparent;
+    border: 1px solid #fff;
+}
+
+</style>
+</head>
+<body style="background-color: #f6f6f6;">
+<script type="text/javascript" src="js/header.js" ></script>
+<div class="page index">
+	<div class="userexinfo-container">
+		<div class="clearfix">
+			<script type="text/javascript" src="js/menu.js" ></script>
+			<div class="address-box">
+				<div class="profile-panel">
+					<h3 class="profile-paneltitle"><span>我的收藏</span></h3>
+					<div class="profile-panelcontent">
+							<div class="favor-restaurants ng-scope">
+								<div class="clearfix">
+									
+									<div class="favor-rstblock">
+										<div class="favor-rstblock-header">
+											<div class="favor-rstblock-headerbg" style="background-image: url(&quot;//shadow.elemecdn.com/faas/desktop/media/img/favor-rst-bg1.804470.jpg&quot;);"></div>
+										    <a class="favor-rstblock-name ng-binding">聚丰牛肉汤锅贴饺</a>
+										</div>
+										<a href="#"><img class="favor-rstblock-logo" src="//fuss10.elemecdn.com/d/d9/faf13545b3dafa659be54339a82afjpeg.jpeg?imageMogr2/thumbnail/78x78/format/webp/quality/85"/></a>
+										<div class="favor-rstblock-starrating icon-star">
+											<span class="star-ranking">
+            									<span class="star-score" style="width: 50px"></span>
+       										</span>
+										</div>
+										<div class="favor-rstblock-content">
+											<div class="favor-rstblock-item">
+												<p>起送价</p>
+												<p class="value icon-yen ng-binding">15</p>
+											</div>
+											<div class="favor-rstblock-item">
+												<p>送餐时间</p>
+												<p class="value icon-yen ng-binding">31</p>
+											</div>
+										</div>
+										<div class="favor-rstblock-activity">
+											<i class="favor-rstblock-cancel icon ion-trash-a"></i>
+										</div>
+										<div class="favor-rstblock-mask hide">
+											<p class="tip">取消收藏该商家？</p>
+											<p><button class="btn-confirm">取消</button><button class="btn-cancel">不取消</button></p>
+										</div>
+									</div>
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

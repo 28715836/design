@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点外卖</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="css/personal.css" />
+<link rel="stylesheet" href="css/message.css" />
+<script src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/store.js" ></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=XTzpH0Sqozk7R5uoKZmTRQtj1jzg1PrN"></script>
+	<!--加载鼠标绘制工具-->
+<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<script type="text/javascript" src="js/message.js" ></script>
+<script>
+	
+	
+</script>
+<style>
+
+</style>
+</head>
+<body style="background-color: #f6f6f6;">
+<nav class="navbar navbar-default navbar-fixed-top" style="background-color: #1e89e0;height: 60px;" role="navigation"> 
+ <div class="container-fluid" style="width: 980px;">
+    <div class="navbar-header" >
+      <a class="" href="#"><img src="img/logo.png" style="width: 150px;height: 60px;float: left;"/></a>
+      <a class="navbar-brand" href="homePage.html">首页</a>
+      <a class="navbar-brand" href="personal.html">我的订单</a>
+      <a class="navbar-brand" style="background-color: #006bc7;" href="openStore.html">加盟合作</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right"">
+      <li><a class="log-reg" href="login.html"> 登录/注册</a></li>
+      <li class="dropdown ng-hide">
+	        <a href="#" class="dropdown-toggle" >
+	             <!--<b class="caret"></b>-->
+	        </a>
+	        <ul class="dropdown-menu">
+	            <li><a href="personal.html">个人中心</a></li>
+	            <li><a href="address.html">我的地址</a></li>
+	            <li><a href="favor.html">我的收藏</a></li>
+	            <li class="divider"></li>
+	            <li><a href="javascript:void(logout())">退出登录</a></li>
+	        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="main-container">
+	<div id="base-page" class="stepPage">
+		<div class="no-margin form-horizontal">
+			<div class="form-group">
+				<label class="control-label col-sm-2">
+					<em class="red">*</em>门店名称
+				</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="请输入门店名称,不超过15个字" class="form-control storeName" onblur="isEmpty(this)">
+					<span class="validate" style="display: none;">请填写门店名称</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">
+					<em class="red">*</em>联系人
+				</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="请输入门店名称,不超过15个字"  class="form-control contactPeople" onblur="isEmpty(this)">
+					<span class="validate" style="display: none;">请填写联系人</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">
+					<em class="red">*</em>联系电话
+				</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="请输入门店名称,不超过15个字"  class="form-control contactPhone" onblur="isEmpty(this)">
+					<span class="validate" style="display: none;">请填写联系电话</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">
+					<em class="red">*</em>经营品类
+				</label>
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-3">
+							<select validate="notEmpty" class="form-control">
+								<option value="1000">美食</option>
+								<option value="19">甜点饮品</option>
+								<option value="20">生活超市</option>
+								<option value="21">生鲜果蔬</option>
+								<option value="1001">鲜花绿植</option>
+								<option value="22">医药健康</option>
+							</select>
+							<span class="validate" style="display: none;"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="line"></div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">
+					<em class="red">*</em>门店地址
+				</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="请输入门店名称,不超过15个字"  class="form-control address" onblur="isEmpty(this)">
+					<span class="validate" style="display: none;">请填写门店地址</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">
+					<em class="red">*</em>配送范围
+				</label>
+				<div class="col-sm-9">
+					<div id="map-container">
+						<div id="autocomplate-container">
+							<button class="btn btn-primary" onclick="draw(BMAP_DRAWING_POLYGON)">绘制</button>
+							<button class="btn btn-primary" onclick="clearAll()">清空</button>
+							<button class="btn btn-primary" onclick="getPoint()">获取</button>
+						</div>
+						<div id="amap-container" class="amap-container" style="position: relative; background: rgb(252, 249, 242);">
+							<div id="allmap"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="line"></div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">
+					店铺LOGO（选填）
+				</label>
+				<div class="col-sm-6">
+					<div class="imgupload">
+						<form id="imgFile">
+							<input type="file" name="files" class="file">
+						</form>
+						<div class="delete" style="display: none;" onclick="deleteLOGO()"></div>
+						<div class="loading" style="display: none;"></div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="btns">
+			<button type="button" class="btn btn-primary" onclick="applyStore()">提交</button> 
+		</div>
+	</div>
+</div>
+<div id="resultShape"></div>
+</body>
+<script>
+	var userInfo = null;
+	$(function() {
+		var access_token = localStorage.getItem("token")
+		if (access_token) {
+			var user = querySelf(access_token);
+			if(user != null) {
+				userInfo = user;
+			} else {
+				window.location.href = "login.html";
+			}
+		} else {
+			window.location.href = "login.html";
+		}
+		$("input[type=file]").change(function(e){
+				$(".loading").css({"display":"block"});
+				var files = new FormData($("#imgFile")[0]);  
+				$.ajax({
+					contentType: false,
+		       		processData: false,
+					type:"post",
+					url:"http://101.132.194.204:9090/producer/fileUpload/imge",
+					data:files,
+					async:false,
+					success: function (data) {
+						if (data.length != 0) {
+							$(".file").css({"display":"none"});
+							$(".delete").css({"display":"block"});
+							$("#imgFile").append('<div class="img" style="background-image: url(&quot;'+data[0].filePath+'&quot;);"></div>');
+						}
+					},
+					error:function (regMsg) {
+						alert(regMsg.responseJSON.message)
+					}
+				});
+				$(".loading").css({"display":"none"});
+			});
+		});
+	
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point(116.331398,39.897445);
+	map.centerAndZoom(point,12);
+
+	var geolocation = new BMap.Geolocation();
+	geolocation.getCurrentPosition(function(r){
+		if(this.getStatus() == BMAP_STATUS_SUCCESS){
+			var mk = new BMap.Marker(r.point);
+//			map.addOverlay(mk);
+			map.panTo(r.point);
+//			alert('您的位置：'+r.point.lng+','+r.point.lat);
+		}
+		else {
+			alert('failed'+this.getStatus());
+		}        
+	},{enableHighAccuracy: true});
+	map.enableScrollWheelZoom(true); 
+	var styleOptions = {
+        strokeColor:"#1e89e0",    //边线颜色。
+        fillColor:"#1e89e0",      //填充颜色。当参数为空时，圆形将没有填充效果。
+        strokeWeight: 3,       //边线的宽度，以像素为单位。
+        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+        strokeStyle: 'solid' //边线的样式，solid或dashed。
+    }
+	var overlays = [];
+	var overlaycomplete = function(e){
+        overlays.push(e.overlay); 
+    };
+    function getPoint(){
+    	var range = [];
+		for(var i = 0; i < overlays.length; i++){
+			var overlay=overlays[i].getPath();
+			for(var j = 0; j < overlay.length; j++){
+				var grid =overlay[j];
+				range.push({"longitude":grid.lng,"latitude":grid.lat});
+				console.log(grid.lng+","+grid.lat);
+			}
+        }
+		return range;
+	}
+    
+    function clearAll() {
+		for(var i = 0; i < overlays.length; i++){
+            map.removeOverlay(overlays[i]);
+        }
+        overlays.length = 0;
+    }
+    //实例化鼠标绘制工具
+    var drawingManager = new BMapLib.DrawingManager(map, {
+        isOpen: false, //是否开启绘制模式
+        //enableDrawingTool: true, //是否显示工具栏
+        drawingToolOptions: {
+            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+            offset: new BMap.Size(5, 5), //偏离值
+        },
+        circleOptions: styleOptions, //圆的样式
+        polylineOptions: styleOptions, //线的样式
+        polygonOptions: styleOptions, //多边形的样式
+        rectangleOptions: styleOptions //矩形的样式
+    });  
+	 //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+	function draw(type){
+		if (overlays.length > 0) {
+			alert("只能绘制一个范围")
+		} else {
+			drawingManager.open(); 
+			drawingManager.setDrawingMode(type);
+		}
+	}	
+	function applyStore () {
+		var storeName = $(".storeName").val();
+		var contactPeople = $(".contactPeople").val();
+		var contactPhone = $(".contactPhone").val();
+		var address = $(".address").val();
+		var logoImgUrl = $(".img").css("background-image");
+		if (logoImgUrl != undefined && logoImgUrl != '' && logoImgUrl != null) {
+			logoImgUrl = $(".img").css("background-image").split("\"")[1];
+		} else {
+			logoImgUrl = '';
+		}
+		console.log(logoImgUrl);
+		var rangeList = getPoint();
+		var store = {"storeName":storeName,"contactPeople":contactPeople,"contactPhone":contactPhone,"address":address,"logoImgUrl":logoImgUrl,"rangeList":rangeList};
+		$.ajax({
+				contentType:"application/json;charset=utf-8",
+			type:"post",
+			url:"http://101.132.194.204:9090/producer/store/insertStore/"+userInfo.id,
+			data:JSON.stringify(store),
+			async:false,
+			success: function (data) {
+				if (data != null && data != '') {
+					$.message({
+						message:'申请成功，3秒后跳转到申请详情页',
+						type:'success'
+					});
+					setTimeout(function(){ window.location.href = "info.html"; }, 3000);
+				}
+			},
+			error: function (regMsg) {
+				 $.message({
+					message:retMsg.responseJSON.message,
+					type:'error'
+				});
+			}
+		})
+	}
+		function deleteLOGO () {
+			$(".file").css({"display":"block"});
+			$(".delete").css({"display":"none"});
+			$(".img").remove();
+		}
+		function isEmpty (obj) {
+			if ($(obj).val() == null || $(obj).val() == '') {
+				$(obj).parent().addClass("has-error");
+				$(obj).siblings().css({"display":"inline"})
+			} else {
+				$(obj).parent().removeClass("has-error");
+				$(obj).siblings().css({"display":"none"});
+			}
+		}
+	
+</script>
+</html>

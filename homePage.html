@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点首页</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script>
+	var name = '';
+	$(function(){
+		var access_token = localStorage.getItem("token")
+		if (access_token) {
+			querySelf (access_token);
+		}
+		storeCategory();
+		seat ('','');
+		$(".btn-primary").click(function(){
+			name = $(".form-control").val();
+			seat(name, '');
+		})
+		
+})
+	function seat (name,categoryId) {
+		var local = JSON.parse(localStorage.getItem("local"));
+		if (local != null) {
+			$(".local").text(local.title);
+			selectStore(local.point.lng, local.point.lat, name, categoryId);
+		} else {
+			window.location.href = "search.html"
+		}
+	}
+	function changeCategory (obj,categoryId) {
+		$(obj).parent().addClass("active").siblings().removeClass("active");
+		seat(name,categoryId);
+	}
+	function storeCategory () {
+		$.ajax({
+			type:"get",
+			url:"http://101.132.194.204:9090/producer/category/selectStoreCategory",
+			async:false,
+			success: function (data) {
+				if (data) {
+					var categoryList = [];
+					categoryList.push('<li class="active"><a href="javascript:void(0)" onclick="changeCategory(this,\'\')">全部商家</a></li>')
+					data.forEach(function(item){
+						categoryList.push('<li><a href="javascript:void(0)" onclick="changeCategory(this,'+item.id+')">'+item.categoryName+'</a></li>');
+					});
+					$(".nav-pills").html(categoryList);
+				}
+			}
+		})
+	}
+</script>
+<script type="text/javascript" src="js/store.js" ></script>
+<style>
+	.place-rstbox-nodata {
+    text-align: center;
+    padding: 80px 20px;
+}
+.nodata {
+    margin-bottom: 20px;
+}
+.nodata {
+    padding-top: 50px;
+    text-align: center;
+}
+.typo-small, figcaption, small {
+    font-size: .9em;
+    color: #888;
+}
+.navbar>.container-fluid .navbar-brand {
+    margin-left: 0px;
+}
+</style>
+</head>
+<body style="background-color: #f6f6f6;">
+<nav class="navbar navbar-default navbar-fixed-top" style="background-color: #1e89e0;height: 60px;" role="navigation"> 
+ <div class="container-fluid" style="width: 980px;">
+    <div class="navbar-header" >
+      <a class="" href="#"><img src="img/logo.png" style="width: 150px;height: 60px;float: left;"/></a>
+      <a class="navbar-brand" style="background-color: #006bc7;" href="homePage.html">首页</a>
+      <a class="navbar-brand" href="personal.html">我的订单</a>
+      <a class="navbar-brand" href="openStore.html">加盟合作</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right"">
+      <li><a class="log-reg" href="login.html"> 登录/注册</a></li>
+      <li class="dropdown ng-hide">
+	        <a href="#" class="dropdown-toggle" >
+	             <!--<b class="caret"></b>-->
+	        </a>
+	        <ul class="dropdown-menu">
+	            <li><a href="personal.html">个人中心</a></li>
+	            <li><a href="address.html">我的地址</a></li>
+	            <li><a href="favor.html">我的收藏</a></li>
+	            <li class="divider"></li>
+	            <li><a href="javascript:void(logout())">退出登录</a></li>
+	        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="main">
+	<div class="container">
+		<div class="localtion"><span>当前位置：</span><span class="local">定远汽车站</span>&nbsp;&nbsp;<span><a href="search.html">[切换位置]</a></span></div>
+		<div class="seach">
+				<div class="input-group">
+					<input type="text" class="form-control">
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="button">
+							搜索
+						</button>
+					</span>
+				</div><!-- /input-group -->
+			</div>
+	</div>
+	<div class="container bottom">
+		<div class="excavator container">
+			<div class="excavator-filter ng-scope">
+				<div class="excavator-filter-name">商家分类</div>
+				<ul class="nav nav-pills">
+					<!--<li><a href="#">全部商家</a></li>
+					<li><a href="#">美食</a></li>
+					<li><a href="#">快餐便当</a></li>
+					<li><a href="#">特色菜系</a></li>
+					<li><a href="#">异国料理</a></li>
+					<li><a href="#">小吃夜宵</a></li>-->
+				</ul>
+			</div>
+		</div>
+		<div class="rest-list">
+			<ul class="list clearfix ng-hide">
+				
+			</ul>
+			<div class="place-rstbox-nodata">
+				<img class="nodata" width="100" src="//shadow.elemecdn.com/faas/desktop/media/img/icon-restaurant.b3a359.png" alt="找不到商家">
+				<div class="typo-small">附近没有找到符合条件的商家，换个筛选条件试试吧</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

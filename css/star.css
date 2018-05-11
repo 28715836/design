@@ -1,0 +1,85 @@
+.myComment{
+	padding: 15px 50px 30px;
+    overflow-x: hidden;
+}
+.content {
+    margin-top: 40px;
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+}
+.content textarea {
+	    width: 100%;
+    height: 62px;
+    border: 0;
+    resize: none;
+    outline: 0;
+    color: #999;
+}
+#starRating .photo span {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 22px;
+    overflow: hidden;
+    font-size: 16px;
+    /*margin-right: 23px;*/
+    cursor: pointer;
+}
+#starRating .photo span:last-child {
+    margin-right: 0px;
+}
+#starRating .photo span .nohigh {
+    position: absolute;
+    width: 20px;
+    height: 22px;
+    top: 0;
+    left: 0;
+    background: url("../img/star-gray.svg");
+}
+#starRating .photo span .high {
+    position: absolute;
+    width: 20px;
+    height: 22px;
+    top: 0;
+    left: 0;
+    background: url("../img/star-yellow.svg");
+}
+#starRating .starNum {
+    font-size: 16px;
+    color: #de4414;
+}
+#starRating .bottoms {
+    height: 54px;
+    border-top: 1px solid #d8d8d8;
+}
+#starRating .photo {
+    margin-left: 10px;
+}
+#starRating .bottoms a {
+    margin-bottom: 0;
+}
+
+#starRating .bottoms a {
+    width: 130px;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 3px;
+    display: inline-block;
+    font-size: 16px;
+    transition: all 0.2s linear;
+    margin: 16px 0 22px;
+    text-align: center;
+    cursor: pointer;
+}
+/*.garyBtn {
+    margin-right: 60px!important;
+    background-color: #e1e1e1;
+    color: #999999;
+}*/
+.blueBtn {
+    background-color: #1968b1;
+    color: #fff;
+}
+.blueBtn:hover {
+    background: #0e73d0;
+}

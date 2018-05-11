@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点外卖</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="css/personal.css" />
+<script src="./js/bootstrap.min.js"></script>
+<script>
+	$(function() {
+		$(".link-ul li").click(function(){
+			var status = $(this).find("a").attr('href').split("=")[1];
+			console.log(status)
+		})
+	})
+</script>
+<style>
+</style>
+</head>
+<body style="background-color: #f6f6f6;">
+<script type="text/javascript" src="js/header.js" ></script>
+<div class="page index">
+	<div class="userexinfo-container">
+		<div class="clearfix">
+			<script type="text/javascript" src="js/menu.js" ></script>
+			<div class="orders-box">
+				<div class="orders">
+					<div class="orders-head">
+						<ul class="orders-ul clearfix">
+							<li href="#status=0" class="active">全部订单</li>
+							<li href="#status=0" class="">待付款<span class="num">1</span></li>
+							<li href="#status=0" class="">待使用</li><li class="">待评价<span class="num">1</span></li>
+							<li href="#status=0" class="">退款/售后</li>
+						</ul>
+					</div>
+					<div class="profile-order-content">
+						<div class="orderblock ng-isolate-scope">
+							<div class="orderblock-item orderblock-rstinfo clearfix">
+								<a class="logo" href="/shop/157530143">
+									<img alt="商家 LOGO" src="//fuss10.elemecdn.com/d/56/a0fe124d5cea0fd94e5e4bfcc09d9jpeg.jpeg?imageMogr2/thumbnail/70x70/format/webp/quality/85"></a>
+									<h3 class="name">
+										<a class="inherit ng-binding" href="/shop/157530143">极味肥牛饭(鲁港店)</a>
+									</h3>
+									<p class="product ng-binding">麻辣金针肥牛中份+米饭1份 / 极味蕃茄肥牛中份+米饭1份</p>
+									<a class="productnum" href="order/id/3021342723990650892">共<i class="count ng-binding">3</i>个菜品&gt;</a>
+							</div>
+							<div class="orderblock-item orderblock-time ng-binding">2018-04-01 17:41<br></div>
+							<div class="orderblock-item orderblock-price">
+								<p class="total ng-binding">¥28.00</p>
+								<span class="ng-binding"></span>
+							</div>
+							<div class="orderblock-item orderblock-status">
+								<p class="status ng-binding end">订单已完成</p>
+								<a class="statuslink ng-binding" href="order/id/3021342723990650892">订单详情</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点外卖</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="css/personal.css" />
+<link rel="stylesheet" href="css/star.css" />
+<script src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/store.js" ></script>
+<script>
+	//评分
+    var starRating = 0;
+    var userInfo = null;
+	$(function() {
+		var Request = getURL();
+		var access_token = localStorage.getItem("token")
+		if (access_token) {
+			var user = querySelf(access_token);
+			if(user != null) {
+				userInfo = user;
+				var status = Request['status'];
+				$(".orders-ul li").eq(status).addClass("active");
+				orderCommentList(user.id,Request['status']);
+			} else {
+				window.location.href = "login.html";
+			}
+		} else {
+			window.location.href = "login.html";
+		}
+        $('.photo span').on('mouseenter',function () {
+            var index = $(this).index()+1;
+            $(this).prevAll().find('.high').css('z-index',1)
+            $(this).find('.high').css('z-index',1)
+            $(this).nextAll().find('.high').css('z-index',0)
+            $('.starNum').html((index).toFixed(1)+'分')
+        })
+        $('.photo').on('mouseleave',function () {
+            $(this).find('.high').css('z-index',0)
+            var count = starRating
+            if(count == 5) {
+                $('.photo span').find('.high').css('z-index',1);
+            } else {
+                $('.photo span').eq(count).prevAll().find('.high').css('z-index',1);
+            }
+            $('.starNum').html(starRating.toFixed(1)+'分')
+        })
+        $('.photo span').on('click',function () {
+            var index = $(this).index()+1;
+            $(this).prevAll().find('.high').css('z-index',1)
+            $(this).find('.high').css('z-index',1)
+            starRating = index;
+            $('.starNum').html(starRating.toFixed(1)+'分');
+        })
+        $(".link-ul li").click(function(){
+			var status = $(this).find("a").attr('href').split("=")[1];
+			$(".orders-ul li").eq(status).addClass("active").siblings().removeClass("active");
+			orderCommentList(userInfo.id,status);
+		})
+		$(".orders-ul li a").click(function(){
+			var status = $(this).attr('href').split("=")[1];
+			$(this).parent().addClass("active").siblings().removeClass("active");
+			orderCommentList(userInfo.id, status);
+		})
+	})
+	//新增评论
+	function insertComment () {
+		var data=JSON.stringify({"userId":userInfo.id,"storeId":storeId,"orderNum":orderNum,
+		"content":$(".content textarea").val(),"score":starRating});
+		console.log(data);
+		$.ajax({
+		contentType:"application/json;charset=utf-8",
+		type:"post",
+		url:"http://101.132.194.204:9090/producer/comment/insertComment",
+		data:data,
+		async:false,
+		success: function (data) {
+			orderCommentList(userInfo.id,0);
+		}
+		})
+		 $('#commentModal').modal('hide');
+	}
+	function orderCommentList (userId, status) {
+		$.ajax({
+		type:"get",
+		url:"http://101.132.194.204:9090/producer/order/selectOrderIsComment/"+userId,
+		async:false,
+		success: function (data) {
+			if (data) {
+				var orderList = [];
+					data.forEach(function(item){
+					 if (item.comment == null && status == 0) {
+						var orderTotals = orderTotal(item.goodsOrderList);
+						orderList.push('<div class="orderblock ng-isolate-scope">'+
+							'<div class="orderblock-item orderblock-rstinfo clearfix">'+
+								'<a class="logo" href="store.html?storeId='+item.store.id+'">'+
+									'<img alt="商家 LOGO" src="'+item.store.logoImgUrl+'"></a>'+
+									'<h3 class="name">'+
+										'<a class="inherit ng-binding" href="store.html?storeId='+item.store.id+'">'+item.store.storeName+'</a>'+
+									'</h3>'+
+									'<p class="product ng-binding">'+orderTotals[1]+'</p>'+
+									'<a class="productnum" href="orderDetail.html?orderNum='+item.orderNum+'">共<i class="count ng-binding">'+orderTotals[2]+'</i>个菜品&gt;</a>'+
+							'</div>'+
+							'<div class="orderblock-item orderblock-time ng-binding">'+item.creationDate+'<br></div>'+
+							'<div class="orderblock-item orderblock-price">'+
+								'<p class="total ng-binding">¥'+orderTotals[0]+'</p>'+
+								'<span class="ng-binding"></span>'+
+							'</div>'+
+							'<div class="orderblock-item orderblock-status">'+
+								'<p class="status ng-binding end">'+
+									'<button onclick="showCommentModal(\''+item.orderNum+'\','+item.store.id+')" style="padding: 4px 12px;" class="btn btn-primary" data-toggle="modal">'+
+									'	评价'+
+									'</button></p>'+
+							'</div>'+
+						'</div>');
+						}
+					 if (item.comment != null && status == 1) {
+						var orderTotals = orderTotal(item.goodsOrderList);
+						orderList.push('<div class="orderblock ng-isolate-scope">'+
+							'<div class="orderblock-item orderblock-rstinfo clearfix">'+
+								'<a class="logo" href="store.html?storeId='+item.store.id+'">'+
+									'<img alt="商家 LOGO" src="'+item.store.logoImgUrl+'"></a>'+
+									'<h3 class="name">'+
+										'<a class="inherit ng-binding" href="store.html?storeId='+item.store.id+'">'+item.store.storeName+'</a>'+
+									'</h3>'+
+									'<p class="product ng-binding">'+
+									'<span class="star-ranking">'+
+            							  '<span class="star-score" style="width: '+(72*item.comment.score/5)+'px"></span>'+
+       								'</span><span style="padding:10px;color:red">'+item.comment.score+'分</span></p>'+
+									'<span class="productnum">'+item.comment.content+'</span>'+
+							'</div>'+
+							'<div class="orderblock-item orderblock-time ng-binding">'+item.creationDate+'<br></div>'+
+							'<div class="orderblock-item orderblock-price">'+
+								'<p class="total ng-binding">¥'+orderTotals[0]+'</p>'+
+								'<span class="ng-binding"></span>'+
+							'</div>'+
+							'<div class="orderblock-item orderblock-status">'+
+								'<p class="status ng-binding end">已评价</p>'+
+							'</div>'+
+						'</div>');
+						}
+					});
+				$(".profile-order-content").html(orderList);
+			}
+		}
+		})
+	}
+	var orderNum = '';
+	var storeId = -1;
+	//显示评论弹窗
+	function showCommentModal (num, id) {
+		this.orderNum = num;
+		this.storeId = id;
+		$('#commentModal').modal('show');
+	}
+	function getURL () {
+    	var url=window.location.href;
+		var Request = new Object();
+		if(url.indexOf("#")!=-1){
+			var str = url.split("#")[1];
+			strs = str.split("&");
+			for(var i=0;i<strs.length;i++)
+				Request[strs[i].split("=")[0]]=unescape(strs[ i].split("=")[1]);
+		}
+		return Request;
+    }
+</script>
+<style>
+	a:focus { text-decoration: none; } 
+	a:hover { text-decoration: none; color: #000;} 
+	.orders-ul a {color: #000;}
+	.active a {
+		color: #31BBAC;
+	}
+</style>
+</head>
+<body style="background-color: #f6f6f6;">
+<script type="text/javascript" src="js/header.js" ></script>
+<div class="page index">
+	<div class="userexinfo-container">
+		<div class="clearfix">
+			<script type="text/javascript" src="js/menu.js" ></script>
+			<div class="orders-box">
+				<div class="orders">
+					<div class="orders-head">
+						<ul class="orders-ul clearfix">
+							<li><a href="#status=0">待评价</a></li>
+							<li><a href="#status=1">已评价</a></li>
+						</ul>
+					</div>
+					<div class="profile-order-content">
+						<!--<div class="orderblock ng-isolate-scope">
+							<div class="orderblock-item orderblock-rstinfo clearfix">
+								<a class="logo" href="/shop/157530143">
+									<img alt="商家 LOGO" src="//fuss10.elemecdn.com/d/56/a0fe124d5cea0fd94e5e4bfcc09d9jpeg.jpeg?imageMogr2/thumbnail/70x70/format/webp/quality/85"></a>
+									<h3 class="name">
+										<a class="inherit ng-binding" href="/shop/157530143">极味肥牛饭(鲁港店)</a>
+									</h3>
+									<p class="product ng-binding">麻辣金针肥牛中份+米饭1份 / 极味蕃茄肥牛中份+米饭1份</p>
+									<a class="productnum" href="order/id/3021342723990650892">共<i class="count ng-binding">3</i>个菜品&gt;</a>
+							</div>
+							<div class="orderblock-item orderblock-time ng-binding">2018-04-01 17:41<br></div>
+							<div class="orderblock-item orderblock-price">
+								<p class="total ng-binding">¥28.00</p>
+								<span class="ng-binding"></span>
+							</div>
+							<div class="orderblock-item orderblock-status">
+								<p class="status ng-binding end">
+									<button style="padding: 4px 12px;" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+										评价
+									</button>
+								</p>
+							</div>
+						</div>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" style="top: 150px;" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					评价
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="myComment">
+					<div id="starRating">
+						<p style="float: left;"> <span style="font-size: 16px;">评分</span></p>
+					    <p class="photo" style="float: left;">
+					        <span><i class="high"></i><i class="nohigh"></i></span>
+					        <span><i class="high"></i><i class="nohigh"></i></span>
+					        <span><i class="high"></i><i class="nohigh"></i></span>
+					        <span><i class="high"></i><i class="nohigh"></i></span>
+					        <span><i class="high"></i><i class="nohigh"></i></span>
+					    </p>
+					    <p class="starNum" style="float: left;margin-left: 10px;">0.0分</p>
+					</div>
+					<div class="content">
+						<textarea placeholder="亲，说说这次购物的“亮点”和“不足”吧。"></textarea>
+					</div>
+					
+				</div>
+				<!--<div class="demo">
+				    <div id="function-demo1" class="target-demo"></div>
+				    <div id="function-hint1" class="hint"></div>
+				</div>-->
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="insertComment()">
+					评价
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+</body>
+<script>
+    $(function () {
+        //评分
+        var starRating = 0;
+        $('.photo span').on('mouseenter',function () {
+            var index = $(this).index()+1;
+            $(this).prevAll().find('.high').css('z-index',1)
+            $(this).find('.high').css('z-index',1)
+            $(this).nextAll().find('.high').css('z-index',0)
+            $('.starNum').html((index).toFixed(1)+'分')
+        })
+        $('.photo').on('mouseleave',function () {
+            $(this).find('.high').css('z-index',0)
+            var count = starRating
+            if(count == 5) {
+                $('.photo span').find('.high').css('z-index',1);
+            } else {
+                $('.photo span').eq(count).prevAll().find('.high').css('z-index',1);
+            }
+            $('.starNum').html(starRating.toFixed(1)+'分')
+        })
+        $('.photo span').on('click',function () {
+            var index = $(this).index()+1;
+            $(this).prevAll().find('.high').css('z-index',1)
+            $(this).find('.high').css('z-index',1)
+            starRating = index;
+            $('.starNum').html(starRating.toFixed(1)+'分');
+//          alert('评分：'+(starRating.toFixed(1)+'分'))
+        })
+//      //取消评分
+//      $('.cancleStar').on('click',function () {
+//          starRating = 0;
+//          $('.photo span').find('.high').css('z-index',0);
+//          $('.starNum').html(starRating.toFixed(1)+'分');
+//      })
+//      //确定评分
+//      $('.sureStar').on('click',function () {
+////          if(starRating===0) {
+////              alert('最低一颗星！');
+////          } else {
+//             alert('评分：'+(starRating.toFixed(1)+'分'))
+////          }
+//      })
+    })
+</script>
+</html>

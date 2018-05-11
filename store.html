@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<!--<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
+		<link rel="stylesheet" href="css/store.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css">
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js" ></script>
+		
+		<script>
+		var data = [];
+		$(function(){
+			var Request = requestURL();
+			var access_token = localStorage.getItem("token")
+			if (access_token) {
+				var user = querySelf(access_token);
+				if(user != null) {
+					isFavorByUserId(user.id,Request["storeId"]);
+				}
+			}
+			selectCategoryByStoreId(Request["storeId"]);
+			storeDetail(Request["storeId"]);
+			$(".shop-cartfooter-checkout").click(function(){
+				sessionStorage.removeItem("data");
+				sessionStorage.setItem("data",JSON.stringify(data));
+				window.location.href = "checkout.html";
+			})
+       });
+//     添加商品
+       function addFoodsNum (obj,storeId,foods) {
+       	var foodsNum = $(obj).siblings("span").text();
+       	if (foodsNum > 998) {
+       		return;
+       	}
+       	$(obj).siblings("span").text(parseInt(foodsNum)+1);
+       	isShopCar(storeId, foods);
+	   	appendFoodsList();
+       }
+//     去除商品
+	   function deleteFoodsNum (obj,storeId,foods) {
+	   	var foodsNum = $(obj).siblings("span").text();
+	   	for (var i=0;i<data.length;i++) {
+			if (foods.id == data[i].goodsId) {
+				data[i].num --;
+				if (data[i].num == 0) {
+					$(obj).parents(".menuFood").html('<button class="shop-cartbutton ng-binding ng-scope" onclick="addShopCar(this,'+storeId+','+JSON.stringify(foods).replace(/"/g, '&quot;')+')">加入购物车</button>');
+					data.splice(i,1);
+					$(".shop-cartbasket").offset(function(n,c){
+				    	newPos=new Object();
+				        newPos.top=c.top + 44;
+				        return newPos;
+			    	});
+				}			
+			}
+		}
+       	$(obj).siblings("span").text(parseInt(foodsNum)-1);
+       	appendFoodsList();
+	   }
+    //加入购物车
+	   function addShopCar (obj,storeId,foods) {
+	   	$(".shop-cartbasket").offset(function(n,c){
+	    	newPos=new Object();
+	        newPos.top=c.top - 44;
+	        return newPos;
+    	});
+	   	$(obj).parent().html('<div class="shop-cartctrl ng-scope">'+
+		'	<button class="ctrl minus" onclick="deleteFoodsNum(this,'+storeId+','+JSON.stringify(foods).replace(/"/g, '&quot;')+')">-</button>'+
+		'	<span class="ctrl quantity ng-pristine ng-valid">1</span>'+
+			'<button class="ctrl plus" onclick="addFoodsNum(this,'+storeId+','+JSON.stringify(foods).replace(/"/g, '&quot;')+')">+</button>'+
+		'</div>');
+		isShopCar(storeId, foods);
+	   	appendFoodsList();
+	   }
+//	   判断购物车中是否有该商品
+	function isShopCar (storeId, foods) {
+		for (var i=0;i<data.length;i++) {
+			if (foods.id == data[i].goodsId) {
+				data[i].num ++;
+				return ;
+			}
+		};
+		data.push({storeId:storeId,goodsId:foods.id,name:foods.name,num:1,price:foods.price});
+	}
+	// 将商品显示在购物车中
+	function appendFoodsList () {
+		var goodsLists = [];
+		var totalNum = 0;
+		var totalPrice = 0;
+		data.forEach(function(item){
+			totalNum += item.num;
+			totalPrice += (item.price)*(item.num);
+			goodsLists.push('<div class="shop-cartbasket-tablerow ng-scope">'+
+		    				'<div class="cell itemname ng-binding">'+item.name+'</div>'+
+		    				'<div class="cell itemquantity">'+item.num+'</div>'+
+		    				'<div class="cell itemtotal ng-binding">¥'+(item.price)*(item.num)+'</div>'+
+		    			'</div>');
+		})
+		$(".shop-cartpieces").text(totalNum);
+		$(".shop-cartfooter-text").text(totalPrice.toFixed(2));
+		$(".food-list").html(goodsLists);
+	}
+	</script>
+	<script type="text/javascript" src="js/store.js" ></script>
+	<style>
+		.shop-cart {
+    z-index: 102;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    height: 46px;
+    font-size: 14px;
+}
+.shop-cartbasket {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 1px 15px #ccc;
+}
+.shop-grouphead.single {
+    background-color: #fafafa;
+    border-top: 2px solid #0089dc;
+}
+.shop-grouphead {
+    padding: 12px 10px;
+    height: 17px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+.shop-grouphead .shop-grouphead-row {
+    height: 30px;
+}
+.shop-cartbasket-tablerow {
+    display: table;
+    table-layout: fixed;
+    height: 45px;
+    width: 300px;
+    padding: 0 10px;
+    margin-top: -1px;
+}
+.shop-cartbasket-tablerow .cell.itemname {
+    width: 50%;
+    margin-right: 10px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #666;
+}
+.shop-cartbasket-tablerow .cell {
+    display: table-cell;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+.shop-cartbasket-tablerow .cell.itemquantity {
+    width: 25%;
+    text-align: center;
+}
+.shop-cartbasket-tablerow .cell {
+    display: table-cell;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+.shop-cartbasket-tablerow .cell.itemtotal {
+    text-align: right;
+    color: #f17530;
+}
+.shop-cartbasket-tablerow .cell {
+    display: table-cell;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+.shop-cartfooter {
+    z-index: 2;
+    position: relative;
+    cursor: pointer;
+    height: 46px;
+    line-height: 46px;
+    background-color: #2c2c2c;
+    box-shadow: 0 1px 3px #2c2c2c;
+}
+.shop-carticon {
+    position: relative;
+    width: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+}
+.shop-cartfooter-text, .shop-carticon {
+    display: inline-block;
+    vertical-align: middle;
+}
+.shop-cartpieces {
+    position: absolute;
+    top: -6px;
+    left: 22px;
+    height: 16px;
+    line-height: 14px;
+    min-width: 16px;
+    border-radius: 50%;
+    font-size: 12px;
+    text-align: center;
+    background-color: #ff2828;
+    color: #fff;
+    font-weight: 700;
+}
+.shop-cartfooter-text.price {
+    font-size: 24px;
+}
+.shop-cartfooter-text {
+    color: #fff;
+}
+.shop-cartfooter-text, .shop-carticon {
+    display: inline-block;
+    vertical-align: middle;
+}
+.shop-cartfooter-text.price:before {
+    content: "\00a5";
+    font-size: 14px;
+}
+.shop-cartfooter-checkout {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    border: 0;
+    outline: 0;
+    width: 120px;
+    text-align: center;
+    background-color: #51d862;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+}
+.shop-cartctrl {
+    border: 1px solid #ddd;
+}
+.shop-cartctrl .ctrl.minus {
+    left: 0;
+    border-right: 1px solid #ddd;
+    border-radius: 20px 0 0 20px;
+    cursor: pointer;
+}
+.shop-cartctrl .ctrl.quantity {
+    background-color: #fff;
+    width: 36px;
+    left: 27px;
+}
+.shop-cartctrl .ctrl {
+    position: absolute;
+    top: 0;
+    display: inline-block;
+    height: 26px;
+    border: 0;
+    width: 27px;
+    text-align: center;
+    background-color: #eee;
+    line-height: 24px;
+    outline: 0;
+}
+.shop-cartctrl .ctrl.plus {
+    right: 0;
+    border-left: 1px solid #ddd;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+}
+	</style>
+	</head>
+	<body style="background-color: #f6f6f6;">
+		<script type="text/javascript" src="js/storeHeader.js" ></script>
+			<div class="shopnav">
+				<div class="container clearfix">
+					<div class="shopnav-left">
+						<a href="javascript:void(0)" class="shopnav-tab store active">所有商品</a>
+						<a href="javascript:void(0)" class="shopnav-tab comment">评价</a>
+					</div>
+				</div>
+			</div>
+			<div class="shopmain clearfix container ng-scope">
+				<div class="shopmenu">
+					<div class="shopmenu-nav">
+						<!--<a href="#" class="ng-binding ng-scope">热销</a>
+						<a href="#" class="ng-binding ng-scope">混沌</a>
+						<a href="#" class="ng-binding ng-scope">炒饭小吃</a>
+						<a href="#" class="ng-binding ng-scope">黄焖鸡</a>
+						<a href="#" class="ng-binding ng-scope">米线类</a>-->
+					</div>
+					<div class="shopmenu-main grid" style="margin-top: 0px;">
+						
+				    </div>
+				    <div class="ng-isolate-scope">
+				    	<div class="shop-cart" >
+				    		<div class="shop-cartbasket" style="top: -40px; height: auto;">
+				    			<div class="ng-isolate-scope">
+				    				<div class="shop-grouphead single">
+				    					<div class="shop-grouphead-row">
+				    						购物车
+				    						<a>[清空]</a>
+				    					</div>
+				    				</div>
+				    			</div>
+				    			<div class="food-list">
+					    			<!--显示购物车中的商品-->
+				    			</div>
+				    		</div>
+				    		<div class="shop-cartfooter">
+				    			<span class="icon-cart shop-carticon icon ion-ios-cart">
+				    				<span class="shop-cartpieces ng-binding ng-scope">0</span>
+				    			</span>
+				    			<p class="shop-cartfooter-text price ng-binding ng-scope">0.00</p>
+				    			<div class="shop-cartfooter-checkout ng-binding">去结算</div>
+				    		</div>
+				    	</div>
+				    </div>
+			</div>
+			<div class="shopmain-right ng-isolate-scope">
+					<div>
+						<div class="shopbulletin-section">
+							<h3 class="shopbulletin-section-title">商家公告</h3>
+							<p class="shopbulletin-content ng-binding">饿了么通知:烦请大家有需要找工作的亲朋好友请致电0550-4499055</p>
+						</div>
+					</div>
+				</div>
+		</div>
+		<!--<div class="menuFood">
+			<button class="shop-cartbutton ng-binding ng-scope" onclick="addShopCar(this)">加入购物车</button>
+		</div>-->
+	</body>
+</html>

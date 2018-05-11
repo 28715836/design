@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点一点外卖</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/homePage.css" />
+<link rel="stylesheet" href="css/personal.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/store.js" ></script>
+<script>
+	$(function(){
+		var Request = requestURL();
+		var access_token = localStorage.getItem("token")
+		if (access_token) {
+			var user = querySelf(access_token);
+			if(user != null) {
+				orderDetail(Request['orderNum']);
+			} else {
+				window.location.href = "login.html";
+			}
+		} else {
+			window.location.href = "login.html";
+		}
+	});
+
+</script>
+<style>
+	
+</style>
+</head>
+<body style="background-color: #f6f6f6;">
+<script type="text/javascript" src="js/header.js" ></script>
+<div class="page index">
+	<div class="userexinfo-container">
+		<div class="clearfix">
+			<script type="text/javascript" src="js/menu.js" ></script>
+			<div class="address-box">
+				<div class="profile-panel">
+					<h3 class="profile-paneltitle"><span>订单详情</span></h3>
+					<div class="profile-panelcontent">
+						<div class="progressDisplay">
+							<ul class="orderprogress-topcard orderprogress-timeline ng-isolate-scope" >
+								<li class="ng-binding ng-scope">订单已提交</li>
+								<li class="ng-binding ng-scope">商家已接单</li>
+								<li class="ng-binding ng-scope">已送达</li>
+							</ul>
+							<div class="orderprogress-card ng-isolate-scope">
+								<div class="orderprogress-status ng-scope">
+									<h5 class="orderprogress-statustitle ng-binding">订单已完成</h5>
+									<p class="orderprogress-statusdesc ng-binding">20:45确认送达</p>
+									<div class="orderprogress-statusbuttons"> 
+										<a href="javascript:" class="ng-binding ng-scope linktype">再来一单</a>
+									</div>
+								</div>
+							</div>
+							<div class="ng-isolate-scope">
+								<div class="orderprogress-rstinfo">
+									<a><img class="orderprogress-rstimg" width="44" height="44" src=""/></a>
+									<div class="orderprogress-rstgrid">
+										<h4 class="orderprogress-rstname">
+											<a class="inherit ng-binding">极味肥牛饭(鲁港店)</a>
+										</h4>
+										<div class="orderprogress-rstextra">
+											<span class="ng-binding">订单号：3021342723990650892</span>
+											<span class="ng-binding">商家电话：13365536891</span>
+										</div>
+									</div>
+									<div class="orderprogress-rstoperate">
+										<a class="rstinfo-favor ng-scope">收藏</a>
+										<a class="rstinfo-favor ng-scope">投诉</a>
+									</div>
+								</div>
+							</div>
+							<div class="orderprogress-cardtable">
+								<div class="orderprogress-cardcell ng-isolate-scope" orderprogress-total="" link="orderReady">
+									<div class="orderprogress-total"></div>
+								</div>
+								<div class="orderprogress-cardcell rightside ng-isolate-scope">
+									<div class="orderprogress-deliveryinfo">
+										<h5 class="orderprogress-deliverytitle">配送信息</h5>
+										<div class="orderprogress-deliverygroup">
+											<p>
+												<span class="orderprogress-deliverykey">送达时间：</span>
+												<span class="ng-binding">尽快送出</span>
+											</p>
+										</div>
+										<div class="orderprogress-deliverygroup">
+											<p>
+												<span class="orderprogress-deliverykey">联 系 人：</span>
+												<span class="ng-binding">杨凯(先生)</span>
+											</p>
+											<p>
+												<span class="orderprogress-deliverykey">联系电话：</span> 
+												<span class="ng-binding">13083037022</span>
+											</p>
+											<p>
+												<span class="orderprogress-deliverykey">收货地址：</span> 
+												<span class="ng-binding">安徽工程大学机电学院(文津校区)文津西路8号</span>
+											</p>
+										</div>
+										<div class="orderprogress-deliverygroup tail">
+											
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="orderprogress-roundborder"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

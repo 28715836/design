@@ -1,0 +1,615 @@
+
+a:focus { text-decoration: none; } 
+.ng-hide {
+    display: none !important;
+}
+a {
+    text-decoration: none;
+}
+	.shopguide {
+    background: url(//shadow.elemecdn.com/faas/desktop/media/img/shop-bg.0391dd.jpg) no-repeat;
+    background-size: cover;
+    padding-top: 48px;
+    margin-top: -68px;
+	}
+	.shopguide .container {
+    position: relative;
+    display: table;
+    height: 142px;
+}
+	.container {
+	    font-size: 14px;
+	    width: 960px;
+	    margin: 0 auto;
+	}
+	/**, :after, :before {
+	    box-sizing: inherit;
+	}*/
+	.shopguide-info {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    color: #fff;
+    z-index: 1;
+	}
+	.shopguide-info>img {
+    margin-right: 15px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    border: 4px solid #FFF;
+    border: 4px solid rgba(255,255,255,.3);
+    vertical-align: middle;
+}
+.shopguide-info-wrapper, .shopguide-tip {
+    display: inline-block;
+    vertical-align: middle;
+}
+.shopguide-info h1 {
+    font-size: 20px;
+    max-width: 246px;
+}
+.shopguide-info h1, .shopguide-info-wrapper, .shopguide-tip {
+    display: inline-block;
+    vertical-align: middle;
+}
+.shopguide-info h1, .shopguide-tip {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.shopguide-info-rate {
+    margin: 10px 0;
+}
+.starrating {
+    position: relative;
+    display: inline-block;
+    line-height: 1em;
+    color: #ccc;
+}
+.shopguide-server {
+    width: 700px;
+}
+.shopguide-server {
+    display: table-cell;
+    padding-right: 100px;
+    vertical-align: middle;
+    color: #fff;
+    text-align: right;
+    width: 490px;
+}
+.shopguide-server>span:first-child {
+    margin-left: 0;
+}
+.shopguide-server>span {
+    display: inline-block;
+    margin-left: 80px;
+    vertical-align: top;
+    text-align: center;
+}
+em {
+    font-style: normal;
+    font-weight: 400;
+}
+.shopguide-server-value {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 3px;
+    font-size: 18px;
+}
+.shopguide-favor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px 5px;
+    width: 80px;
+    text-align: center;
+    background: #FFF;
+    background: rgba(255,255,255,.1);
+    border-radius: 0 0 5px 5px;
+    color: #eee;
+}
+
+.shopguide-favor i {
+    font-size: 20px;
+    width: 22px;
+    height: 20px;
+    background-image: url(../img/favorite-grey.svg);
+    background-position: 0 0;
+    background-size: 100% 100%;
+}
+/*.icon-favorite:before {
+    content: "\e919";
+}*/
+/*[class^=icon-] {
+    font-family: eleme;
+    speak: none;
+    font-style: normal;
+    font-weight: 400;
+    -webkit-font-feature-settings: normal;
+    font-feature-settings: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}*/
+.star-ranking{
+	/*position: absolute;
+    top: 0;
+    left: 0;*/
+    /*overflow: hidden;*/
+    display: inline-block;
+    width: 75px;
+    height: 15px;
+    line-height: 15px;
+    overflow: hidden;
+	background-image: url(../img/star-gray.svg);
+    background-repeat: repeat-x;
+}
+
+.star-score {
+    display: inline-block;
+    width: 75px;
+    height: 15px;
+    line-height: 15px;
+    overflow: hidden;
+    background-repeat: repeat-x;
+    background-image: url(../img/star-yellow.svg);
+}
+.shopguide-info-extra:hover {
+	opacity: 1;
+	overflow: visible;
+}
+.shopguide-info-extra {
+    background: #FFF;
+    background: rgba(255,255,255,.1);
+}
+.shopguide-info-extra {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    padding-top: 142px;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+    opacity: 0;    transition: opacity .1s ease-in-out,max-height .4s ease-in-out;
+}
+.shopguide-info-extra>ul {
+    padding: 0 20px;
+    background-color: #fff;
+    color: #333;
+}
+.shopguide-extra-item:first-child {
+    border-top: none;
+}
+.shopguide-extra-item {
+    padding: 15px 0;
+    border-top: 1px dashed #eee;
+    color: #666;
+}
+ ul {
+    list-style: none;
+}
+.shopnav {
+    line-height: 57px;
+    background-color: #fff;
+}
+.shopnav-tab.active {
+    color: #0089dc;
+}
+.shopnav-tab {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    color: #333;
+    font-size: 16px;
+    width: 102px;
+    text-align: center;
+}
+.shopnav-tab {
+    width: 112px;
+}
+.shopnav-left {
+    float: left;
+    width: 75%;
+}
+.shopnav-tab.active:after {
+    right: 0;
+    bottom: 0;
+    border-top: 3px solid;
+}
+.shopnav-tab+.shopnav-tab:before, .shopnav-tab.active:after {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+
+.shopnav-tab:before {
+    top: 50%;
+    margin-top: -7px;
+    height: 14px;
+    width: 1px;
+    background-color: #ccc;
+}
+.container, body.hidesidebar .container {
+    width: 1180px;
+}
+.shopmain {
+    margin-top: 20px;
+}
+.container {
+    font-size: 14px;
+    width: 960px;
+    margin: 0 auto;
+}
+.shopmenu, .shoprate {
+    float: left;
+    width: 75%;
+}
+.shopmenu-nav {
+    padding: 10px 15px 5px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    z-index: 101;
+}
+.shopmenu-nav a {
+    display: inline-block;
+    margin: 5px;
+    padding: 3px 10px;
+    width: 18%;
+    border-radius: 2px;
+    color: #666;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: top;
+}
+.shopmenu-nav a:hover {
+	background-color: #F5F5F5;
+}
+/*.shopmenu-main.grid .shopmenu-list {
+    width: 102%;
+}*/
+.shopmenu-title {
+    height: 35px;
+    font-size: 16px;
+    padding-left: 19px;
+    padding-top: 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    color: #333;
+    margin-bottom: 2px;
+}
+.shopmenu-title span {
+    font-size: 12px;
+    color: #999;
+}
+.shopmenu-main.grid .shopmenu-food {
+    position: relative;
+    float: left;
+    /*margin-right: 2%;*/
+    /*padding-right: 10px;*/
+    width: 50%;
+}
+.shopmenu-food {
+    margin-bottom: 12px;
+    font-size: 12px;
+    background-color: #fff;
+    /*border: 1px solid #eee;*/
+    height: 102px;
+}
+.shopmenu-main.grid .shopmenu-food img {
+    float: left;
+    margin-right: 14px;
+    width: 100px;
+    height: 100px;
+}
+.shopmenu-main.grid .shopmenu-food-name {
+    margin-top: 10px;
+}
+.shopmenu-food-name, .shopmenu-food-price {
+    font-size: 14px;
+    font-weight: 700;
+}
+.ui-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.color-mute {
+    color: #999;
+}
+.shopmenu-main.grid .shopmenu-food-price {
+    position: absolute;
+    bottom: 10px;
+}
+.shopmenu-food-price:before {
+    content: "\00a5";
+    margin-right: 3px;
+    font-size: 12px;
+}
+.color-stress {
+    color: #f74342;
+}
+.shop-cartbutton {
+    display: inline-block;
+    background-color: #0089dc;
+    color: #fff;
+}
+.shop-cartbutton, .shop-cartctrl {
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    border: 0;
+    cursor: pointer;
+    width: 90px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 20px;
+    text-align: center;
+    outline: 0;
+}
+.shopmain-right {
+    float: right;
+    width: 23.6%;
+}
+.shopbulletin-content {
+    padding: 10px 15px;
+    line-height: 2;
+}
+.shopbulletin-section {
+    margin-top: -20px;
+    border-radius: 2px 2px 0 0;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.12);
+}
+.shopbulletin-section-title {
+    padding: 0 1em;
+    line-height: 2.8em;
+    background-color: #0089dc;
+    color: #fff;
+}
+
+/*评论*/
+.shoprate {
+		margin-top: 20px;
+    float: left;
+    width: 75%;
+}
+.commentbox {
+    background-color: #fff;
+    border: 1px solid #eee;
+}
+.commentfilter {
+    background-color: #fafafa;
+    position: relative;
+    color: #666;
+    border-bottom: 1px solid #eee;
+    height: 43px;
+}
+.commentfilter-item.active {
+    border-top: 3px solid #0089dc;
+    border-bottom-color: #fff;
+    background-color: #fff;
+    color: #0089dc;
+}
+.commentfilter-item {
+    float: left;
+    height: 43px;
+    line-height: 39px;
+    padding: 0 15px;
+    min-width: 115px;
+    border-right: 1px solid #eee;
+    border-top: 3px solid transparent;
+    color: #333;
+    text-align: center;
+    cursor: pointer;
+}
+.commentlist {
+    padding: 0 20px 20px 0;
+}
+.reply-field {
+    padding: 25px 20px;
+}
+.rank .title, .reply-field {
+    border-bottom: 1px solid #e5e5e5;
+}
+.reply-user-avatar {
+    width: 40px;
+    height: 40px;
+    float: left;
+    border-radius: 50%;
+    /*background-image: url(http://xs01.meituan.net/waimai_web/img/user-default.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;*/
+}
+.reply-user-avatar img {
+	width: 40px;
+    height: 40px;
+     border-radius: 50%;
+}
+.reply-field .info {
+    margin-left: 60px;
+    margin-top: 11px;
+}
+.reply-field .info, .reply-field .time {
+    height: 15px;
+    line-height: 15px;
+    color: #999;
+    vertical-align: top;
+}
+.clearfix, .search-box .result-right li {
+    zoom: 1;
+}
+.reply-field .time {
+    height: 15px;
+    line-height: 15px;
+    color: #999;
+    vertical-align: top;
+}
+
+.fr {
+    float: right;
+}
+.reply-field .name {
+    font-size: 14px;
+    margin-right: 16px;
+    color: #333;
+    font-weight: 700;
+}
+.reply-field .info .feel {
+    margin-left: 10px;
+}
+.clearfix:after {
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+.reply-field .user-reply {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-left: 60px;
+    line-height: 25px;
+    color: #666;
+    word-wrap: break-word;
+}
+.reply-field .bizz-reply {
+    color: #FFA735;
+    font-size: 14px;
+    word-break: break-all;
+    margin-left: 60px;
+    margin-top: 16px;
+    padding-top: 15px;
+    border-top: 1px dashed #e5e5e5;
+}
+.bizz-replay-title {
+    float: left;
+    line-height: 25px;
+}
+.bizz-replay-content {
+    margin-left: 70px;
+    color: #333;
+    line-height: 25px;
+}
+.shopbulletin-title {
+    line-height: 45px;
+    height: 45px;
+    background-color: #0089dc;
+    color: #fff;
+    font-size: 16px;
+    padding-left: 20px;
+    }
+    .shopbulletin-section .head {
+    margin-top: 20px;
+    padding: 0 20px;
+}
+.shopbulletin-section .head strong {
+    font-size: 22px;
+    font-weight: 700;
+    color: #4a4a4a;
+    line-height: 35px;
+}
+.fl {
+    float: left;
+}
+ .shopbulletin-section .star-ranking {
+ 	display: inline-block;
+    width: 150px;
+    height: 20px;
+    line-height: 20px;
+    background-size: 30px 20px;
+    overflow: hidden;
+    margin: 6px 0 0 5px;
+    background-image: url(http://xs01.meituan.net/waimai_web/img/restaurant/star-gray.svg);
+    background-repeat: repeat-x;
+}
+   .shopbulletin-section .star-score {
+    display: inline-block;
+    width: 150px;
+    height: 20px;
+    line-height: 20px;
+    background-size: 30px 20px;
+    overflow: hidden;
+    background-image: url(http://xs01.meituan.net/waimai_web/img/restaurant/star-yellow.svg);
+    background-repeat: repeat-x;
+}
+.clearfix:after {
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+.shopbulletin-section .detail {
+    padding: 5px 20px 20px;
+}
+.shopbulletin-section .field {
+    margin-top: 15px;
+}
+.shopbulletin-section .field .bar {
+    display: inline-block;
+    width: 120px;
+    position: relative;
+    background-color: #f5f5f5;
+    height: 4px;
+    margin: 8px 0 0 8px;
+}
+.shopbulletin-section  .field .percent {
+    float: right;
+}
+.clearfix:after {
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+.fl {
+    float: left;
+}
+.shopbulletin-section .field .bar i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    height: 4px;
+    background: #ffd161;
+}
+i {
+    font-style: normal;
+}
+
+.navbar-default .navbar-brand {
+	    text-align: center;
+		width: 120px;
+		color: #fff;
+	}
+	.navbar-brand {
+	height: max-content;
+    float: left;
+    padding: 15px 15px;
+    font-size: 18px;
+    color: #FFF;
+    line-height: 20px;
+}
+ 	.navbar-header a {
+		/*background-color:#006bc7 ;*/
+		color: #fff;
+	}
+	.nav > li:hover .dropdown-menu {display: block;}
+	.navbar-default {
+  	 border: 0px ;
+	}
+	.over {
+		overflow: visible;
+     opacity: 1; 
+	}
+	
+
